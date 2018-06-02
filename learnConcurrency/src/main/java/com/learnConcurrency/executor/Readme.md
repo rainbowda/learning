@@ -1,6 +1,6 @@
 这里讲介绍Executor框架的使用  
-1. [Executor接口介绍](#Executor接口介绍)
-2. [ExecutorService接口介绍](#ExecutorService接口介绍)
+1. [Executor接口介绍](#executor接口介绍)
+2. [ExecutorService接口介绍](#executorservice接口介绍)
 3. [创建线程池的一些方法介绍](#创建线程池的一些方法介绍)
     + 3.1 [newFixedThreadPool方法 ](#newfixedthreadpool方法)
     + 3.2 [newWorkStealingPool方法 ](#newworkstealingpool方法)
@@ -12,10 +12,10 @@
     + 4.1 [有界队列](#有界队列)
     + 4.2 [无界队列](#无界队列)
     + 4.3 [拒绝策略](#拒绝策略)
-        + 4.3.1 [AbortPolicy](#AbortPolicy)
-        + 4.3.2 [CallerRunsPolicy](#CallerRunsPolicy)
-        + 4.3.3 [DiscardPolicy](#DiscardPolicy)
-        + 4.3.4 [DiscardOldestPolicy](#DiscardOldestPolicy)
+        + 4.3.1 [AbortPolicy](#abortpolicy)
+        + 4.3.2 [CallerRunsPolicy](#callerrunspolicy)
+        + 4.3.3 [DiscardPolicy](#discardpolicy)
+        + 4.3.4 [DiscardOldestPolicy](#discardoldestpolicy)
         + 4.3.5 [自定义拒绝策略](#自定义拒绝策略)
    
 ## Executor接口介绍 
