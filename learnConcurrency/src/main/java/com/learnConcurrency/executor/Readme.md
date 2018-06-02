@@ -1,12 +1,12 @@
 这里讲介绍Executor框架的使用  
-##Executor
+##Executor  
 Executor是一个接口，里面提供了一个execute方法，该方法接收一个Runable参数，如下
 ```
 public interface Executor {
     void execute(Runnable command);
 }
 ```
-##ExecutorService
+##ExecutorService  
 接下来我们来看看继承了Executor接口的ExecutorService
 ```
 public interface ExecutorService extends Executor {
@@ -59,10 +59,10 @@ newScheduledThreadPool()
 newSingleThreadScheduledExecutor()
 ```
 
-##newFixedThreadPool()
+##newFixedThreadPool()    
 创建一个线程的线程池，若空闲则执行，若没有空闲线程则暂缓在任务队列中。
 
-##newWorkStealingPool()
+##newWorkStealingPool()  
 创建持有足够线程的线程池来支持给定的并行级别，并通过使用多个队列，减少竞争，它需要穿一个并行级别的参数，如果不传，则被设定为默认的CPU数量。
 
 ##newSingleThreadExecutor()
@@ -82,24 +82,24 @@ newSingleThreadScheduledExecutor()
 ##自定义线程池
 
 
-###有界队列
+###有界队列  
 
-###无界队列
+###无界队列  
 
-###拒绝策略
-拒绝策略
-####AbortPolicy
-直接抛出异常信息，系统正常工作
-
-####CallerRunsPolicy
-只要线程池未关闭，该策略直接在调用者线程中，云枭当前被丢弃的任务。
-
-####DiscardPolicy
-丢弃无法处理的任务，不给予任何处理。
-
-####DiscardOldestPolicy
-丢弃最老的一个请求，尝试再次提交当前任务。
-
-####自定义拒绝策略
-实现RejectedExecutionHandle接口
+###拒绝策略  
+拒绝策略  
+####AbortPolicy   
+直接抛出异常信息，系统正常工作  
+  
+####CallerRunsPolicy  
+只要线程池未关闭，该策略直接在调用者线程中，云枭当前被丢弃的任务。  
+  
+####DiscardPolicy  
+丢弃无法处理的任务，不给予任何处理。  
+  
+####DiscardOldestPolicy  
+丢弃最老的一个请求，尝试再次提交当前任务。  
+  
+####自定义拒绝策略   
+实现RejectedExecutionHandle接口  
 
