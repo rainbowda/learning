@@ -3,10 +3,10 @@
 1. [Executor接口介绍](#executor接口介绍)
 2. [ExecutorService接口介绍](#executorservice接口介绍)
 3. [创建线程池的一些方法介绍](#创建线程池的一些方法介绍)
-    + 3. 1 [newFixedThreadPool方法 ](#newfixedthreadpool方法)
-    + 3. 2 [newCachedThreadPool方法 ](#newcachedthreadpool方法)
-    + 3. 3 [newScheduledThreadPool方法 ](#newscheduledthreadpool方法)
-    + 3. 4 [newWorkStealingPool方法 ](#newworkstealingpool方法)
+    + 3.1 [newFixedThreadPool方法 ](#newfixedthreadpool方法)
+    + 3.2 [newCachedThreadPool方法 ](#newcachedthreadpool方法)
+    + 3.3 [newScheduledThreadPool方法 ](#newscheduledthreadpool方法)
+    + 3.4 [newWorkStealingPool方法 ](#newworkstealingpool方法)
 
 
 ## Executor接口介绍 
