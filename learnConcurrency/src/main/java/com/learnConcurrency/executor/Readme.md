@@ -265,9 +265,9 @@ public class Main {
             int finalI = i + 1;
             pool.submit(() -> {
                 try {
-                    System.out.println("任务"+ finalI +":开始等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                    System.out.println("任务"+ finalI +":开始等待60秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
                     Thread.sleep(60000);
-                    System.out.println("任务"+ finalI +":结束等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                    System.out.println("任务"+ finalI +":结束等待60秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
