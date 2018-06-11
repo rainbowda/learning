@@ -160,7 +160,56 @@ public class Main {
 }
 ```
 
+示例代码
 
+```java
+public class Main {
+
+    public static void main(String[] args){
+        ExecutorService pool = Executors.newFixedThreadPool(4);
+
+        for (int i = 0; i < 8; i++) {
+            int finalI = i + 1;
+            pool.submit(() -> {
+                try {
+                    System.out.println("任务"+ finalI +":开始等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                    Thread.sleep(2000);
+                    System.out.println("任务"+ finalI +":结束等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        }
+        pool.shutdown();
+    }
+}
+```
+
+输出结果
+
+```
+任务4:开始等待2秒,时间:17:13:22.048,当前线程名：pool-1-thread-4
+任务2:开始等待2秒,时间:17:13:22.048,当前线程名：pool-1-thread-2
+任务3:开始等待2秒,时间:17:13:22.048,当前线程名：pool-1-thread-3
+任务1:开始等待2秒,时间:17:13:22.048,当前线程名：pool-1-thread-1
+
+任务2:结束等待2秒,时间:17:13:24.048,当前线程名：pool-1-thread-2
+任务3:结束等待2秒,时间:17:13:24.048,当前线程名：pool-1-thread-3
+任务1:结束等待2秒,时间:17:13:24.048,当前线程名：pool-1-thread-1
+任务4:结束等待2秒,时间:17:13:24.048,当前线程名：pool-1-thread-4
+任务6:开始等待2秒,时间:17:13:24.049,当前线程名：pool-1-thread-4
+任务7:开始等待2秒,时间:17:13:24.049,当前线程名：pool-1-thread-1
+任务5:开始等待2秒,时间:17:13:24.049,当前线程名：pool-1-thread-3
+任务8:开始等待2秒,时间:17:13:24.049,当前线程名：pool-1-thread-2
+
+任务5:结束等待2秒,时间:17:13:26.050,当前线程名：pool-1-thread-3
+任务7:结束等待2秒,时间:17:13:26.050,当前线程名：pool-1-thread-1
+任务8:结束等待2秒,时间:17:13:26.051,当前线程名：pool-1-thread-2
+任务6:结束等待2秒,时间:17:13:26.050,当前线程名：pool-1-thread-4
+```
+
+可以看出任务1-4在同一时间执行，在2秒后执行完毕，同时开始执行任务5-8。说明方法内部只创建了4个线程，其他任务存放在队列中等待执行。
 
 ### newCachedThreadPool方法  
 
@@ -205,6 +254,55 @@ Process finished with exit code -1073741571 (0xC00000FD)
 
 
 
+
+示例代码
+
+```java
+public class Main {
+    public static void main(String[] args) throws Exception{
+        ExecutorService pool = Executors.newCachedThreadPool();
+        for (int i = 0; i < 8; i++) {
+            int finalI = i + 1;
+            pool.submit(() -> {
+                try {
+                    System.out.println("任务"+ finalI +":开始等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                    Thread.sleep(60000);
+                    System.out.println("任务"+ finalI +":结束等待2秒,时间:"+LocalTime.now()+",当前线程名："+Thread.currentThread().getName());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            //睡眠10秒
+            Thread.sleep(10000);
+        }
+        pool.shutdown();
+    }
+}
+```
+
+执行结果
+
+```
+任务1:开始等待60秒,时间:17:15:21.570,当前线程名：pool-1-thread-1
+任务2:开始等待60秒,时间:17:15:31.553,当前线程名：pool-1-thread-2
+任务3:开始等待60秒,时间:17:15:41.555,当前线程名：pool-1-thread-3
+任务4:开始等待60秒,时间:17:15:51.554,当前线程名：pool-1-thread-4
+任务5:开始等待60秒,时间:17:16:01.554,当前线程名：pool-1-thread-5
+任务6:开始等待60秒,时间:17:16:11.555,当前线程名：pool-1-thread-6
+任务7:开始等待60秒,时间:17:16:21.555,当前线程名：pool-1-thread-7
+任务1:结束等待60秒,时间:17:16:21.570,当前线程名：pool-1-thread-1
+任务2:结束等待60秒,时间:17:16:31.554,当前线程名：pool-1-thread-2
+
+任务8:开始等待60秒,时间:17:16:31.556,当前线程名：pool-1-thread-2
+任务3:结束等待60秒,时间:17:16:41.555,当前线程名：pool-1-thread-3
+任务4:结束等待60秒,时间:17:16:51.556,当前线程名：pool-1-thread-4
+任务5:结束等待60秒,时间:17:17:01.556,当前线程名：pool-1-thread-5
+任务6:结束等待60秒,时间:17:17:11.555,当前线程名：pool-1-thread-6
+任务7:结束等待60秒,时间:17:17:21.556,当前线程名：pool-1-thread-7
+任务8:结束等待60秒,时间:17:17:31.557,当前线程名：pool-1-thread-2
+```
+
+示例代码中每个任务都睡眠60秒，每次循环添加任务睡眠10秒，从执行结果来看，添加的7个任务都是由不同的线程来执行，而此时线程1和2都执行完毕，任务8添加进来由之前创建的pool-1-thread-2执行。
 
 ### newScheduledThreadPool方法  
 
@@ -343,7 +441,13 @@ static final class RunnableAdapter<T> implements Callable<T> {
 
 ![方法调用图](https://github.com/rainbowda/learnWay/blob/master/learnConcurrency/src/main/java/com/learnConcurrency/executor/submit%E6%96%B9%E6%B3%95%E4%BC%A0%E9%80%92callable%E6%88%96runable.png?raw=true)
 
+## GitHub地址
 
+[地址在这](https://github.com/rainbowda/learnWay/tree/master/learnConcurrency/src/main/java/com/learnConcurrency/executor)
+
+觉得不错的点个star
+
+下一篇会介绍下自定义线程池，后续也会更新newWorkStealingPool方法介绍
 
 ## 参考资料
 
