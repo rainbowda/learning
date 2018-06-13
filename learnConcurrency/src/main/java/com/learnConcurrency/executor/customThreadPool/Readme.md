@@ -9,6 +9,31 @@
         + 1.3.5 [自定义拒绝策略](#自定义拒绝策略)
 当然除了以上这些，开可以自定义线程池
 ## 自定义线程池
+### ThreadPoolExecutor构造函数介绍
+
+在介绍穿件线程池的方法之前要先介绍一个类ThreadPoolExecutor，应为Executors工厂大部分方法都是返回ThreadPoolExecutor对象，先来看看它的构造函数吧
+
+```java
+public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              long keepAliveTime,
+                              TimeUnit unit,
+                              BlockingQueue<Runnable> workQueue,
+                              ThreadFactory threadFactory,
+                              RejectedExecutionHandler handler) {...}
+```
+
+参数介绍
+
+| 参数            | 类型                     | 含义                           |
+| :-------------- | ------------------------ | ------------------------------ |
+| corePoolSize    | int                      | 核心线程数                     |
+| maximumPoolSize | int                      | 最大线程数                     |
+| keepAliveTime   | long                     | 存活时间                       |
+| unit            | TimeUnit                 | 时间单位                       |
+| workQueue       | BlockingQueue<Runnable>  | 存放线程的队列                 |
+| threadFactory   | ThreadFactory            | 创建线程的工厂                 |
+| handler         | RejectedExecutionHandler | 多余的的线程处理器（拒绝策略） |
 
 
 ### 有界队列  
