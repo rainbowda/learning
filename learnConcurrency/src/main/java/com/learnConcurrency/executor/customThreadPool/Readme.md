@@ -1,20 +1,30 @@
-1. [自定义线程池](#自定义线程池)
-    + 1.1 [ThreadPoolExecutor构造函数介绍](#threadpoolexecutor构造函数介绍)
-    + 1.2 [核心线程数corePoolSize](#核心线程数corepoolsize)
-    + 1.3 [最大线程数maximumPoolSize](#最大线程数maximumpoolsize)
-    + 1.4 [线程存活时间keepAliveTime](#线程存活时间keepalivetime)
-    + 1.5 [线程存活时间单位unit](#线程存活时间单位unit)
-    + 1.6 [创建线程的工厂threadFactory](#创建线程的工厂threadfactory)
-    + 1.7 [队列](#队列)
-        + 1.7.1 [有界队列](#有界队列)
-        + 1.7.2 [无界队列](#无界队列)
-    + 1.8 [拒绝策略](#拒绝策略)
-        + 1.8.1 [AbortPolicy](#abortpolicy)
-        + 1.8.2 [CallerRunsPolicy](#callerrunspolicy)
-        + 1.8.3 [DiscardPolicy](#discardpolicy)
-        + 1.8.4 [DiscardOldestPolicy](#discardoldestpolicy)
-        + 1.8.5 [自定义拒绝策略](#自定义拒绝策略)
 ## 自定义线程池
+开篇一张图（图片来自[阿里巴巴Java开发手册（详尽版）](https://github.com/alibaba/p3c/blob/master/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E8%AF%A6%E5%B0%BD%E7%89%88%EF%BC%89.pdf)），后面全靠编
+
+<a href="https://github.com/alibaba/p3c/blob/master/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E8%AF%A6%E5%B0%BD%E7%89%88%EF%BC%89.pdf" target="_target">[阿里巴巴Java开发手册（详尽版）](https://github.com/alibaba/p3c/blob/master/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E8%AF%A6%E5%B0%BD%E7%89%88%EF%BC%89.pdf) </a>
+
+![](https://github.com/rainbowda/learnWay/blob/customThreadPool/learnConcurrency/src/main/java/com/learnConcurrency/executor/customThreadPool/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%A7%84%E7%BA%A6.png?raw=true)
+
+好了，从图片中就可以看到这篇博文的主题了，ThreadPoolExecutor自定义线程池，
+
+## 目录
+
+1. [ThreadPoolExecutor构造函数介绍](#threadpoolexecutor构造函数介绍)
+2. [核心线程数corePoolSize](#核心线程数corepoolsize)
+3. [最大线程数maximumPoolSize](#最大线程数maximumpoolsize)
+4. [线程存活时间keepAliveTime](#线程存活时间keepalivetime)
+5. [线程存活时间单位unit](#线程存活时间单位unit)
+6. [创建线程的工厂threadFactory](#创建线程的工厂threadfactory)
+7. [队列](#队列)
+    + 7.1 [有界队列](#有界队列)
+    + 7.2 [无界队列](#无界队列)
+8. [拒绝策略](#拒绝策略)
+    + 8.1 [AbortPolicy](#abortpolicy)
+    + 8.2 [CallerRunsPolicy](#callerrunspolicy)
+    + 8.3 [DiscardPolicy](#discardpolicy)
+    + 8.4 [DiscardOldestPolicy](#discardoldestpolicy)
+    + 8.5 [自定义拒绝策略](#自定义拒绝策略)
+
 ### ThreadPoolExecutor构造函数介绍
 
 在介绍穿件线程池的方法之前要先介绍一个类ThreadPoolExecutor，应为Executors工厂大部分方法都是返回ThreadPoolExecutor对象，先来看看它的构造函数吧
@@ -46,7 +56,7 @@ public ThreadPoolExecutor(int corePoolSize,
 
 ### 最大线程数maximumPoolSize
 
-这个参数是线程池中允许创建的最大线程数量，当使用有界队列时，且队列存放的任务满了，那么线程池会创建新的线程（最大不会超过这个参数所设置的值）。需要注意的是，当使用无界队列时，这个参数是无效的。
+这个参数是线程池中允许创建的最大线程数量，当使用有界队列时，且队列存放的任务满了，那么线程池会创建新的线程（最大不会超过这个参数所设置的值）。需要注意的是，**当使用无界队列时，这个参数是无效的。**
 
 ### 线程存活时间keepAliveTime
 
