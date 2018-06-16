@@ -7,7 +7,6 @@
         + 1.3.3 [DiscardPolicy](#discardpolicy)
         + 1.3.4 [DiscardOldestPolicy](#discardoldestpolicy)
         + 1.3.5 [自定义拒绝策略](#自定义拒绝策略)
-当然除了以上这些，开可以自定义线程池
 ## 自定义线程池
 ### ThreadPoolExecutor构造函数介绍
 
