@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>java.util.concurrent.RejectedExecutionHandler</OriginalElement>
+  <nodes>
+    <node x="0.0" y="80.0">java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy</node>
+    <node x="214.5" y="0.0">java.util.concurrent.RejectedExecutionHandler</node>
+    <node x="317.0" y="80.0">java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy</node>
+    <node x="183.0" y="80.0">java.util.concurrent.ThreadPoolExecutor.AbortPolicy</node>
+    <node x="479.0" y="80.0">java.util.concurrent.ThreadPoolExecutor.DiscardPolicy</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy" target="java.util.concurrent.RejectedExecutionHandler">
+      <point x="0.0" y="-15.0" />
+      <point x="81.5" y="50.0" />
+      <point x="239.375" y="50.0" />
+      <point x="-74.625" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ThreadPoolExecutor.DiscardPolicy" target="java.util.concurrent.RejectedExecutionHandler">
+      <point x="0.0" y="-15.0" />
+      <point x="541.5" y="50.0" />
+      <point x="388.625" y="50.0" />
+      <point x="74.625" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ThreadPoolExecutor.AbortPolicy" target="java.util.concurrent.RejectedExecutionHandler">
+      <point x="0.0" y="-15.0" />
+      <point x="240.0" y="60.0" />
+      <point x="289.125" y="60.0" />
+      <point x="-24.875" y="15.0" />
+    </edge>
+    <edge source="java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy" target="java.util.concurrent.RejectedExecutionHandler">
+      <point x="0.0" y="-15.0" />
+      <point x="388.0" y="60.0" />
+      <point x="338.875" y="60.0" />
+      <point x="24.875" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="131.0" y="15.0" />
+  <SelectedNodes>
+    <node>java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy</node>
+    <node>java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy</node>
+    <node>java.util.concurrent.ThreadPoolExecutor.AbortPolicy</node>
+    <node>java.util.concurrent.ThreadPoolExecutor.DiscardPolicy</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
