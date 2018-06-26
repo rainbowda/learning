@@ -129,7 +129,43 @@ AbstractExecutorService抽象类实现ExecutorService接口，并且提供了一
 
 ### execute
 
+```java
+public void execute(Runnable command) {
+   //传进来的线程为null，则抛出空指针异常
+   if (command == null)
+       throw new NullPointerException();
+  
+   //获取当前线程池的状态+线程个数变量
+   int c = ctl.get();
+   /**
+    * 3个步骤
+    */
+   //1.判断当前线程池线程个数是否小于corePoolSize,小于则调用addWorker方法创建新线程运行,且传进来的Runnable当做第一个任务执行。
+   //如果调用addWorker方法返回false，则直接返回
+   if (workerCountOf(c) < corePoolSize) {
+       if (addWorker(command, true))
+           return;
+       c = ctl.get();
+   }
 
+   //2.如果线程池处于RUNNING状态，则添加任务到阻塞队列
+   if (isRunning(c) && workQueue.offer(command)) {
+
+       //二次检查
+       int recheck = ctl.get();
+       //如果当前线程池状态不是RUNNING则从队列删除任务，并执行拒绝策略
+       if (! isRunning(recheck) && remove(command))
+           reject(command);
+
+       //否者如果当前线程池线程空，则添加一个线程
+       else if (workerCountOf(recheck) == 0)
+           addWorker(null, false);
+   }
+   //3.新增线程，新增失败则执行拒绝策略
+   else if (!addWorker(command, false))
+       reject(command);
+}
+```
 
 ## 关闭线程池
 
