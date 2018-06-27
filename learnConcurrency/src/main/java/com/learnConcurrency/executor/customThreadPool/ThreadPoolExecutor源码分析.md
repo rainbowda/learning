@@ -117,51 +117,48 @@ AbstractExecutorService抽象类实现ExecutorService接口，并且提供了一
 
 像execute方法、线程池的关闭方法（shutdown、shutdownNow等等）就没有提供默认的实现。
 
-## 构造函数
+## ThreadPoolExecutor
+
+### 线程池状态
+
+- RUNNING：接受新任务并且处理阻塞队列里的任务
+- SHUTDOWN：拒绝新任务但是处理阻塞队列里的任务
+- STOP：拒绝新任务并且抛弃阻塞队列里的任务同时会中断正在处理的任务
+- TIDYING：所有任务都执行完（包含阻塞队列里面任务）当前线程池活动线程为0，将要调用terminated方法
+- TERMINATED：终止状态。terminated方法调用完成以后的状态
+
+### 构造函数
+
+有四个构造函数，其他三个都是调用下面代码中的这个构造函数
 
 ```java
-    public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              long keepAliveTime,
-                              TimeUnit unit,
-                              BlockingQueue<Runnable> workQueue) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-             Executors.defaultThreadFactory(), defaultHandler);
-    }
-    
-    public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              long keepAliveTime,
-                              TimeUnit unit,
-                              BlockingQueue<Runnable> workQueue,
-                              ThreadFactory threadFactory) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-             threadFactory, defaultHandler);
-    }
-    
-    public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              long keepAliveTime,
-                              TimeUnit unit,
-                              BlockingQueue<Runnable> workQueue,
-                              RejectedExecutionHandler handler) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-             Executors.defaultThreadFactory(), handler);
-    }
-    
-    public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              long keepAliveTime,
-                              TimeUnit unit,
-                              BlockingQueue<Runnable> workQueue,
-                              ThreadFactory threadFactory,
-                              RejectedExecutionHandler handler) {
-    }
+public ThreadPoolExecutor(int corePoolSize,
+                          int maximumPoolSize,
+                          long keepAliveTime,
+                          TimeUnit unit,
+                          BlockingQueue<Runnable> workQueue,
+                          ThreadFactory threadFactory,
+                          RejectedExecutionHandler handler) {
+}
 ```
 
-## 提交任务
+参数介绍
 
-### submit
+| 参数            | 类型                     | 含义                           |
+| :-------------- | ------------------------ | ------------------------------ |
+| corePoolSize    | int                      | 核心线程数                     |
+| maximumPoolSize | int                      | 最大线程数                     |
+| keepAliveTime   | long                     | 存活时间                       |
+| unit            | TimeUnit                 | 时间单位                       |
+| workQueue       | BlockingQueue<Runnable>  | 存放线程的队列                 |
+| threadFactory   | ThreadFactory            | 创建线程的工厂                 |
+| handler         | RejectedExecutionHandler | 多余的的线程处理器（拒绝策略） |
+
+
+
+### 提交任务
+
+#### submit
 
 ```java
 public Future<?> submit(Runnable task) {
@@ -186,7 +183,7 @@ public <T> Future<T> submit(Callable<T> task) {
 }
 ```
 
-### execute
+#### execute
 
 ```java
 public void execute(Runnable command) {
@@ -226,18 +223,147 @@ public void execute(Runnable command) {
 }
 ```
 
-## 关闭线程池
+
+
+#####　addWorker
+
+```java
+private boolean addWorker(Runnable firstTask, boolean core) {
+    retry:
+    for (;;) {
+        int c = ctl.get();
+        int rs = runStateOf(c);
+
+        // Check if queue empty only if necessary.
+        if (rs >= SHUTDOWN &&
+            ! (rs == SHUTDOWN &&
+               firstTask == null &&
+               ! workQueue.isEmpty()))
+            return false;
+
+        for (;;) {
+            int wc = workerCountOf(c);
+            if (wc >= CAPACITY ||
+                wc >= (core ? corePoolSize : maximumPoolSize))
+                return false;
+            if (compareAndIncrementWorkerCount(c))
+                break retry;
+            c = ctl.get();  // Re-read ctl
+            if (runStateOf(c) != rs)
+                continue retry;
+            // else CAS failed due to workerCount change; retry inner loop
+        }
+    }
+
+    boolean workerStarted = false;
+    boolean workerAdded = false;
+    Worker w = null;
+    try {
+        w = new Worker(firstTask);
+        final Thread t = w.thread;
+        if (t != null) {
+            final ReentrantLock mainLock = this.mainLock;
+            mainLock.lock();
+            try {
+                // Recheck while holding lock.
+                // Back out on ThreadFactory failure or if
+                // shut down before lock acquired.
+                int rs = runStateOf(ctl.get());
+
+                if (rs < SHUTDOWN ||
+                    (rs == SHUTDOWN && firstTask == null)) {
+                    if (t.isAlive()) // precheck that t is startable
+                        throw new IllegalThreadStateException();
+                    workers.add(w);
+                    int s = workers.size();
+                    if (s > largestPoolSize)
+                        largestPoolSize = s;
+                    workerAdded = true;
+                }
+            } finally {
+                mainLock.unlock();
+            }
+            if (workerAdded) {
+                t.start();
+                workerStarted = true;
+            }
+        }
+    } finally {
+        if (! workerStarted)
+            addWorkerFailed(w);
+    }
+    return workerStarted;
+}
+```
 
 
 
-## 扩展方法
+### 关闭线程池
 
-### beforeExecute
+#### shutdown
+
+当调用shutdown方法时，线程池将不会再接收新的任务，然后将先前放在队列中的任务执行完成。
+
+下面是shutdown方法的源码
+
+```java
+public void shutdown() {
+    final ReentrantLock mainLock = this.mainLock;
+    mainLock.lock();
+    try {
+        checkShutdownAccess();
+        advanceRunState(SHUTDOWN);
+        interruptIdleWorkers();
+        onShutdown(); // hook for ScheduledThreadPoolExecutor
+    } finally {
+        mainLock.unlock();
+    }
+    tryTerminate();
+}
+```
+
+#### shutdownNow
+
+ 立即停止所有的执行任务，并将队列中的任务返回
+
+```java
+public List<Runnable> shutdownNow() {
+    List<Runnable> tasks;
+    final ReentrantLock mainLock = this.mainLock;
+    mainLock.lock();
+    try {
+        checkShutdownAccess();
+        advanceRunState(STOP);
+        interruptWorkers();
+        tasks = drainQueue();
+    } finally {
+        mainLock.unlock();
+    }
+    tryTerminate();
+    return tasks;
+}
+```
 
 
 
-### afterExecute
 
 
+### 扩展方法
 
-### terminated
+#### beforeExecute
+
+线程执行前
+
+beforeExecute方法是在runWorker方法中调用的
+
+#### afterExecute
+
+线程执行后
+
+beforeExecute方法是在runWorker方法中调用的
+
+#### terminated
+
+线程池关闭
+
+terminated方法是在tryTerminate方法中调用的
