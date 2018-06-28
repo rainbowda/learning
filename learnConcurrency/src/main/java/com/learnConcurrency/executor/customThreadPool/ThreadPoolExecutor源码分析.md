@@ -234,45 +234,49 @@ private boolean addWorker(Runnable firstTask, boolean core) {
         int c = ctl.get();
         int rs = runStateOf(c);
 
-        // Check if queue empty only if necessary.
+        // 检查队列是否只在必要时为空 
         if (rs >= SHUTDOWN &&
             ! (rs == SHUTDOWN &&
                firstTask == null &&
                ! workQueue.isEmpty()))
             return false;
-
+		//循环
         for (;;) {
             int wc = workerCountOf(c);
+            //如果当前的线程数量超过最大容量或者大于（根据传入的core决定是核心线程数还是最大线程数）核心线程数 || 最大线程数，则返回false
             if (wc >= CAPACITY ||
                 wc >= (core ? corePoolSize : maximumPoolSize))
                 return false;
+            //CAS增加c，成功则跳出retry
             if (compareAndIncrementWorkerCount(c))
                 break retry;
+            //CAS失败执行下面方法，查看当前线程数是否变化，变化则继续retry循环，没变化则继续内部循环
             c = ctl.get();  // Re-read ctl
             if (runStateOf(c) != rs)
                 continue retry;
-            // else CAS failed due to workerCount change; retry inner loop
         }
     }
-
+	//CAS成功
     boolean workerStarted = false;
     boolean workerAdded = false;
     Worker w = null;
     try {
+        //新建一个线程
         w = new Worker(firstTask);
         final Thread t = w.thread;
         if (t != null) {
+            //加锁
             final ReentrantLock mainLock = this.mainLock;
             mainLock.lock();
             try {
-                // Recheck while holding lock.
-                // Back out on ThreadFactory failure or if
-                // shut down before lock acquired.
+                
+                //重新检查线程池状态
+                //避免ThreadFactory退出故障或者在锁获取前线程池被关闭
                 int rs = runStateOf(ctl.get());
 
                 if (rs < SHUTDOWN ||
                     (rs == SHUTDOWN && firstTask == null)) {
-                    if (t.isAlive()) // precheck that t is startable
+                    if (t.isAlive()) // 先检查线程是否存活
                         throw new IllegalThreadStateException();
                     workers.add(w);
                     int s = workers.size();
@@ -283,12 +287,14 @@ private boolean addWorker(Runnable firstTask, boolean core) {
             } finally {
                 mainLock.unlock();
             }
+            //判断worker是否添加成功，成功则启动线程，然后将workerStarted设置为true
             if (workerAdded) {
                 t.start();
                 workerStarted = true;
             }
         }
     } finally {
+        //判断线程有没有启动成功，没有则调用addWorkerFailed方法
         if (! workerStarted)
             addWorkerFailed(w);
     }
@@ -374,8 +380,14 @@ terminated方法是在tryTerminate方法中调用的
 
 提交的任务可以分为`CPU 密集型任务`和` IO 密集型任务`，然后根据任务的不同进行分配不同的线程数量。
 
-如果是 `CPU` 密集型任务应当分配较少的线程，比如 `CPU`个数相当的大小。
+CPU密集型任务：
 
-如果是 IO 密集型任务，由于线程并不是一直在运行，所以可以尽可能的多配置线程，比如 `CPU 个数 * 2` 。
+应当分配较少的线程，比如 `CPU`个数相当的大小
 
-当是一个混合型任务，可以将其拆分为 `CPU` 密集型任务以及 `IO` 密集型任务，这样来分别配置。
+ IO 密集型任务：
+
+由于线程并不是一直在运行，所以可以尽可能的多配置线程，比如 CPU 个数 * 2
+
+混合型任务：
+
+可以将其拆分为 `CPU` 密集型任务以及 `IO` 密集型任务，这样来分别配置。
