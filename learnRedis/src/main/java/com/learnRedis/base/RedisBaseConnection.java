@@ -34,6 +34,7 @@ public class RedisBaseConnection {
      */
     @AfterClass
     public static void destroy(){
+        jedis.flushDB();
         jedis.close();
         jedis = null;
     }
