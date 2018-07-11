@@ -1,4 +1,4 @@
-# learnWay
-学习之路
 
-多线程之Executor框架学习--[前往](https://github.com/rainbowda/learnWay/tree/master/learnConcurrency/src/main/java/com/learnConcurrency/executor)
+
+1. [多线程系列](https://github.com/rainbowda/learnWay/blob/master/learnConcurrency)
+2. [redis系列](https://github.com/rainbowda/learnWay/blob/master/learnRedis)
