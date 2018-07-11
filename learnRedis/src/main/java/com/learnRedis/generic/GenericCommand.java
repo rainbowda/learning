@@ -3,10 +3,11 @@ package com.learnRedis.generic;
 import com.learnRedis.base.RedisBaseConnection;
 import org.junit.Test;
 import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisNode;
+import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
-import org.springframework.data.redis.core.query.SortQuery;
 import org.springframework.data.redis.core.query.SortQueryBuilder;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ScanResult;
@@ -58,11 +59,11 @@ public class GenericCommand extends RedisBaseConnection {
         jedis.set("dump", "dumpdump");
 
         byte[] dumpData = jedis.dump("dump");
-        System.out.println(Arrays.toString(dumpData));
+        System.out.println(new String(dumpData, StandardCharsets.UTF_8));
 
         //spring
         dumpData = redisTemplate.dump("dump");
-        System.out.println(Arrays.toString(dumpData));
+        System.out.println(new String(dumpData, StandardCharsets.UTF_8));
     }
 
     /**
@@ -70,9 +71,9 @@ public class GenericCommand extends RedisBaseConnection {
      * EXISTS key [key ...]
      * 返回值：若 key 存在返回 1 ，否则返回 0 。
      * 命令：
-     * set exist exist
-     * exists exist
-     * exists noExist
+     * set exists exists
+     * exists exists
+     * exists noExists
      */
     @Test
     public void exists() {
@@ -194,7 +195,12 @@ public class GenericCommand extends RedisBaseConnection {
         Jedis otherJedis = new Jedis("192.168.17.101");
         System.out.println(otherJedis.get("migrate"));
 
-        //redisTemplate暂时没有找到migrate方法
+        //spring
+        RedisNode.RedisNodeBuilder redisNodeBuilder = new RedisNode.RedisNodeBuilder();
+        redisNodeBuilder.listeningAt("192.168.17.101", 6379);
+        RedisNode redisNode = redisNodeBuilder.build();
+
+        redisTemplate.getConnectionFactory().getConnection().migrate("migrate".getBytes(), redisNode, 0, RedisServerCommands.MigrateOption.COPY, 5000);
     }
 
     /**
@@ -223,9 +229,7 @@ public class GenericCommand extends RedisBaseConnection {
         System.out.println(jedis.get("move"));
 
         //spring
-        //需要通过配置文件切换数据库
         redisTemplate.move("move", 2);
-
     }
 
     /**
@@ -254,7 +258,6 @@ public class GenericCommand extends RedisBaseConnection {
         System.out.println("idletime:" + idletime);
         System.out.println("refcount:" + refcount);
 
-        //spring redisTemplate暂时没有找到相关的方法
     }
 
     /**
@@ -342,7 +345,7 @@ public class GenericCommand extends RedisBaseConnection {
     /**
      * 返回当前选择数据库的随机key
      * RANDOMKEY
-     * 返回值：如果数据库没有任何key，返回nil，否则返回一个随机的key
+     *      * 返回值：如果数据库没有任何key，返回nil，否则返回一个随机的key
      * 命令：
      * set randomkey randomkey
      * set randomkey1 randomkey1
@@ -357,7 +360,6 @@ public class GenericCommand extends RedisBaseConnection {
 
         System.out.println(jedis.randomKey());
 
-        //redisTemplate没找到类似的方法
     }
 
     /**
@@ -515,6 +517,7 @@ public class GenericCommand extends RedisBaseConnection {
      *  sort userId BY userInfo:*->integral GET userInfo:*->name
      *
      *  sort userId BY userInfo:*->integral GET userInfo:*->name store destResult
+     *  lrange destResult 0 -1
      */
     @Test
     public void sort() {
@@ -648,7 +651,7 @@ public class GenericCommand extends RedisBaseConnection {
      * set stringType stringValue
      * lpush listType listValue
      * sadd setType setValue
-     * <p>
+     *
      * type stringType
      * type listType
      * type setType
