@@ -11,13 +11,13 @@
     <div class="layout">
         <layout>
             <i-header>
-                <i-menu mode="horizontal" theme="dark" active-name="1">
+                <i-menu mode="horizontal" theme="dark" active-name="1" @on-select="selectMenuItem">
                     <div class="layout-nav">
-                        <menu-item name="1">
+                        <menu-item name="addMyLog" >
                             <icon type="ios-navigate"></icon>
                             新增日志
                         </menu-item>
-                        <menu-item name="2">
+                        <menu-item name="delMyLog">
                             <icon type="ios-keypad"></icon>
                             删除日志
                         </menu-item>
@@ -25,8 +25,8 @@
                 </i-menu>
             </i-header>
             <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover  style="margin: 32px 0">
-                    Content
+                <Card dis-hover v-for="(item, index) in logData" :key="index" style="margin: 32px 0">
+                    Content {{ item }}
                 </Card>
             </i-content>
         </layout>
@@ -37,6 +37,6 @@
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/iview/2.14.0/iview.js"></script>
-
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
 
 <script type="text/javascript" src="js/index.js"></script>
