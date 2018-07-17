@@ -2,18 +2,18 @@ new Vue({
     el: '#app',
     data () {
         return {
-            logContext:"",
+            logContent:"",
             logData:[]
         }
     },
     methods: {
         init(){
-            this.logContext = "";
+            this.logContent = "";
             this.getMyLog();
         },
         getMyLog(){
             axios.get('/myLog/getMyLog')
-                .then(res=>{ logData = res })
+                .then(res=>{ this.logData = res.data;})
                 .catch(err=>{ console.log(err) })
         },
         selectMenuItem(menuItemName){
@@ -35,13 +35,13 @@ new Vue({
                         },
                         on: {
                             input: (val) => {
-                               this.logContext = val;
+                               this.logContent = val;
                             }
                         }
                     })
                 },
                 onOk:() =>{
-                    if(this.logContext.trim() == ""){
+                    if(this.logContent.trim() == ""){
                         this.$Notice.warning({
                             desc:'日志内容不能为空!'
                         });
@@ -49,22 +49,91 @@ new Vue({
                     }
 
                     //
-                    var params = new URLSearchParams();
-                    params.append('logContext', this.logContext);
-                    axios.post('/myLog/addMyLog',params)
-                         .then(res=>{ console.log(res) })
-                         .catch(err=>{ console.log(err) })
-
+                    axios.post('/myLog/addMyLog',{logContent:this.logContent})
+                         .then(res=>{
+                             if(res.data == true){
+                                 this.$Notice.success({
+                                     desc: '添加日志成功'
+                                 });
+                             } else {
+                                 this.$Notice.warning({
+                                     desc: '添加日志失败'
+                                 });
+                             }
+                             this.init();
+                         })
                 }
             });
 
-            this.init();
         },
-        delMyLog(){
-            alert("delMyLog");
-            this.init();
-        },
+        updateMyLog(item){
+            console.log(item);
+            var obj = JSON.parse(item);
 
+            this.$Modal.confirm({
+                render: (h) => {
+                    return h('Input', {
+                        props: {
+                            value: this.value,
+                            autofocus: true,
+                            placeholder: "请输入日志内容",
+                            type: "textarea",
+                            rows: 4,
+                            value: obj.logContent
+                        },
+                        on: {
+                            input: (val) => {
+                                obj.logContent = val;
+                            }
+                        }
+                    })
+                },
+                onOk:() =>{
+                    if(obj.logContent.trim() == ""){
+                        this.$Notice.warning({
+                            desc:'日志内容不能为空!'
+                        });
+                        return;
+                    }
+
+                    //
+                    axios.post('/myLog/updateMyLog',obj)
+                        .then(res=>{
+                            if(res.data == true){
+                                this.$Notice.success({
+                                    desc: '修改日志成功'
+                                });
+                            } else {
+                                this.$Notice.warning({
+                                    desc: '修改日志失败'
+                                });
+                            }
+                            this.init();
+                        })
+                }
+            });
+        },
+        delMyLog(id){
+            this.$Modal.confirm({
+                title: '删除',
+                content: '你确定要删除这条记录？',
+                onOk: () => {
+                    axios.delete('/myLog/delMyLog/'+id)
+                        .then(res=>{
+                            if(res.data == true){
+                                this.$Notice.success({
+                                    desc: '删除日志成功'
+                                });
+                            } else {
+                                this.$Notice.warning({
+                                    desc:'删除日志失败'
+                                });
+                            }
+                            this.init();
+                        })
+                }
+            });
+        },
     },
     mounted(){
         this.init();

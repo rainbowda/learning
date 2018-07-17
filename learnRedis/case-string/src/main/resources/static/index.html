@@ -15,18 +15,30 @@
                     <div class="layout-nav">
                         <menu-item name="addMyLog" >
                             <icon type="ios-navigate"></icon>
-                            新增日志
+                            新增
                         </menu-item>
                         <menu-item name="delMyLog">
                             <icon type="ios-keypad"></icon>
-                            删除日志
+                            删除
                         </menu-item>
                     </div>
                 </i-menu>
             </i-header>
             <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover v-for="(item, index) in logData" :key="index" style="margin: 32px 0">
-                    Content {{ item }}
+                <Card dis-hover v-for="item in logData" style="margin: 32px 0">
+                    <p slot="title">
+                        <Icon type="clock"></Icon>
+                        {{ JSON.parse(item).createDate }}
+                    </p>
+                    <a href="#" slot="extra" @click="updateMyLog(item)" style="padding-right: 20px">
+                        <Icon type="edit"></Icon>
+                        更新
+                    </a>
+                    <a  href="#" slot="extra" @click="delMyLog(JSON.parse(item).id)">
+                        <Icon type="ios-trash-outline"></Icon>
+                        删除
+                    </a>
+                    {{ JSON.parse(item).logContent }}
                 </Card>
             </i-content>
         </layout>
