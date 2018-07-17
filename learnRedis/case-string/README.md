@@ -12,7 +12,7 @@
 
 demo功能是记录日志，整个demo的大致页面如下
 
-![](C:\IdeaProjects\learnWay\learnRedis\img\case-string\大致页面.png)
+![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-string/%E5%A4%A7%E8%87%B4%E9%A1%B5%E9%9D%A2.png?raw=true)
 
 #### 准备工作
 
@@ -37,7 +37,7 @@ private ValueOperations valueOperations;
 
 先来看看gif图吧
 
-![](C:\IdeaProjects\learnWay\learnRedis\img\case-string\新增.gif)
+![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-string/%E6%96%B0%E5%A2%9E.gif?raw=true)
 
 来看看后台的方法
 
@@ -135,7 +135,7 @@ public List getMyLog(){
 
 #### 更新
 
-![](C:\IdeaProjects\learnWay\learnRedis\img\case-string\更新.gif)
+![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-string/%E6%9B%B4%E6%96%B0.gif?raw=true)
 
 
 
@@ -164,7 +164,7 @@ public boolean updateMyLog(@RequestBody JSONObject myLog){
 
 #### 删除
 
-![](C:\IdeaProjects\learnWay\learnRedis\img\case-string\删除.gif)
+![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-string/%E5%88%A0%E9%99%A4.gif?raw=true)
 
 代码如下
 
