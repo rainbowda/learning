@@ -19,8 +19,6 @@ new Vue({
         selectMenuItem(menuItemName){
             if(menuItemName == "addMyLog")
                 this.addMyLog();
-            else
-                this.delMyLog();
         },
         addMyLog() {
             this.$Modal.confirm({
