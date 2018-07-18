@@ -8,8 +8,6 @@
 
 项目Github地址：[https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-string](https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-string)
 
-> 纸上得来终觉浅，绝知此事要躬行————出自《冬夜读书示子聿》
-
 ### 案例
 
 demo功能是记录日志，整个demo的大致页面如下
@@ -460,8 +458,7 @@ public void daliyActive() {
 
 [Redis基本命令](https://github.com/rainbowda/learnWay/blob/master/learnRedis/command/src/main/java/com/learnRedis/generic/README.md)
 
-### 参考资料
-
-[1]: https://redis.io/commands#string
-[2]: http://www.redis.cn/commands.html#string
+命令比较多，但是还是建议学习的人最好每个命令都去敲下，加深印象。
+下面诗句送给每一个阅读的人。
+> 纸上得来终觉浅，绝知此事要躬行。————出自《冬夜读书示子聿》
 
