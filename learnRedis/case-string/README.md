@@ -74,12 +74,15 @@ valueOperations.increment其实就相当于Redis中的INCR、INCRBY、INCRBYFLOA
 
 ###### INCR
 > INCR key
+
 对存储在指定key的数值执行原子的加1操作。没有对应的key则设置为0，再相加
 ###### INCRBY
 > INCRBY key increment
+
 其实和INCR类似，不同的是这个命令可以指定具体加多少
 ###### INCRBYFLOAT
 > INCRBYFLOAT key increment
+
 也是类似的，不同的是加的数值是浮点数
 ```
 incrbyfloat incrByFloatKey 5.11
@@ -98,15 +101,9 @@ public void incrByFloat() {
     System.out.println(redisTemplate.opsForValue().increment("incrByFloatKey", 5.22));
 }
 ```
-###### DECR
-> DECR key
-将存储的数字减key1。如果密钥不存在，则0在执行操作之前将其设置为。如果密钥包含错误类型的值或包含无法表示为整数的字符串，则会返回错误。该操作仅限于64位有符号整数。没有对应的key则设置为0，再相减.
-其实通过INCRBY命令也可以是实现该命令。
-###### DECRBY
-> DECRBY key decrement
-与INCRBY命令相似，指定减多少
+与INCR相反的命令有DECR和DECRBY，这里就不做介绍了。
 
-
+------
 
 valueOperations.set就是对应Redis的SET命令了，相关联的还有SETEX、SETNX和PSETEX。需要注意的是set在Redis版本2.6.12 提供了`EX` 、`PX`  、`NX`  、`XX`参数用于取代SETEX、SETNX和PSETEX，后续版本可能会移除SETEX、SETNX和PSETEX命令。下面是官网的原话
 
@@ -116,32 +113,18 @@ valueOperations.set就是对应Redis的SET命令了，相关联的还有SETEX、
 
 ###### SET
 > SET key value [expiration EX seconds|PX milliseconds] [NX|XX]
+
 设置键key对应value
 参数选项
-EX seconds – 设置键key的过期时间，单位时秒
+> EX seconds – 设置键key的过期时间，单位时秒
 PX milliseconds – 设置键key的过期时间，单位时毫秒
 NX – 只有键key不存在的时候才会设置key的值
 XX – 只有键key存在的时候才会设置key的值
 
-###### SETEX
-> SETEX key seconds value
-与SET key value EX seconds类似
-###### SETNX
-> SETNX key value
-与SET key value NX类似,可以利用该命令实现分布式锁
-```
-setnx setNxKey setNxValue
-setnx setNxKey setNxValue
-```
-执行结果如下
 
-![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/string/setNx%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
-
-###### PSETEX
-> PSETEX key milliseconds value
-与SET key value PX milliseconds类似
 ###### SETRANGE
 > SETRANGE key offset value
+
 替换从指定长度开始的字符
 ```
 set setRangeKey "Hello World"
@@ -168,9 +151,11 @@ public void setRange() {
 ```
 ###### MSET
 > MSET key value [key value ...]
+
 同时设置多个key、value
 ######　MSETNX
 > MSETNX key value [key value ...]
+
 同时设置多个key、value，key存在则忽略
 
 
@@ -193,9 +178,11 @@ public List getMyLog(){
 
 ###### KEYS
 > KEYS pattern
+
 查找所有符合给定模式pattern（正则表达式）的 key 
 ###### GET
 > GET key
+
 获取key对应的value
 ```
 set getKey getValue
@@ -207,6 +194,7 @@ get getKey
 
 ###### GETRANGE
 > GETRANGE key start end
+
 获取start到end之间的字符
 ```
 set getRangeKey "Hello learyRedis"
@@ -219,6 +207,7 @@ getrange getRangeKey 0 -12
 
 ###### GETSET
 > GETSET key value
+
 设置key对应的新value且返回原来key对应的value
 ```
 getset getSetKey newValue
@@ -232,6 +221,7 @@ get getSetKey
 
 ###### MGET
 > MGET key [key ...]
+
 返回所有指定的key的value
 ```
 mset mGetKey1 mGetValue1 mGetKey2 mGetValue2 mGetKey3 mGetValue3
@@ -267,6 +257,7 @@ public boolean updateMyLog(@RequestBody JSONObject myLog){
 
 ###### APPEND
 > APPEND key value
+
 在value的尾部追加新值
 
 redis客户端执行的命令如下
@@ -281,6 +272,7 @@ get appendKey
 
 ###### STRLEN
 > STRLEN key
+
 返回value的长度
 
 
@@ -309,7 +301,7 @@ public boolean delMyLog(@PathVariable  String id){
 ### BIT相关命令
 
 bit命令有SETBIT、GETBIT、BITCOUNT、BITFIELD、BITOP、BITPOS这些。
-命令这里就不做介绍了，直接讲述bit相关的案例：位图。
+命令这里就不做介绍了，直接讲述bit相关的案例。
 > Pattern: real time metrics using bitmaps
 > BITOP is a good complement to the pattern documented in the BITCOUNT command documentation. Different bitmaps can be combined in order to obtain a target bitmap where the population counting operation is performed.
 > 
@@ -317,5 +309,159 @@ bit命令有SETBIT、GETBIT、BITCOUNT、BITFIELD、BITOP、BITPOS这些。
 
 案例地址[Fast easy realtime metrics using Redis bitmaps](http://blog.getspool.com/2011/11/29/fast-easy-realtime-metrics-using-redis-bitmaps)
 网上译文也有许多，有需要的百度或者google即可
+
+
+
 这里大概讲述下使用位图法统计日登入用户数、周连续登入用户数和月连续登入用户数
+
+> 位图法就是bitmap的缩写，所谓bitmap，就是用每一位来存放某种状态，适用于大规模数据，但数据状态又不是很多的情况。通常是用来判断某个数据存不存在的。 ------来自百度百科
+
+就好像java中int有4个字节，也就是32位。当32位全为1时，也就是int的最大值。
+
+位只能被设置位0或者1，也就是二进制。
+
+java中可以用BitSet来操作位的相关操作
+
+
+
+##### 场景
+
+有一万个用户，id从1到10000，根据当前是否上线，来设置在第id位上是否为1或者0。通过每天的记录来统计用户连续上线的情况。
+
+##### 分析
+
+一号有id为5、3、1的上线了,二号有id为5、4、3的上线了，三号有id为3、2、1的上线了。存储的数据如下
+
+```
+序号：5 4 3 2 1 0
+一号：1 0 1 0 1 0
+二号：1 1 1 0 0 0
+三号：0 0 1 1 1 0
+```
+
+那么我们只有将三天的数据进行与操作就可以知道，三天连续上线的有哪些了，与操作的结果如下
+
+```
+序号：5 4 3 2 1 0
+结果：0 0 1 0 0 0
+```
+
+很明显是id为3的用户连续登入3天。
+
+##### 代码
+
+先定义一些常量
+
+```java
+//存储的key前缀
+private static final String ONLINE_KEY_PREFIX = "online:";
+//天数
+private static final int DAY_NUM = 30;
+//用户数量
+private static final int PEOPLE_NUM = 10000;
+```
+
+然后模拟一个月的数据
+
+```java
+
+public void createData() {
+    //用来保证线程执行完在进行后面的操作
+    CountDownLatch countDownLatch = new CountDownLatch(DAY_NUM);
+
+    int poolSize = Runtime.getRuntime().availableProcessors() * 2;
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(poolSize, poolSize, 60, TimeUnit.SECONDS, new ArrayBlockingQueue(DAY_NUM-poolSize));
+    //DAY_NUM天
+    for (int i = 1; i <= DAY_NUM; i++) {
+        int finalI = i;
+        executor.execute(() -> {
+            //假设有PEOPLE_NUM个用户
+            for (int j = 1; j <= PEOPLE_NUM; j++) {
+                redisTemplate.opsForValue().setBit(ONLINE_KEY_PREFIX + finalI, j, Math.random() > 0.1);
+            }
+            countDownLatch.countDown();
+        });
+    }
+
+    //等待线程全部执行完成
+    try {
+        countDownLatch.await();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+最后是统计
+
+```java
+public void calActive(int day) {
+    if (day < 0 || day > DAY_NUM){
+        throw new IllegalArgumentException("传入的天数不能小于0或者大于30天!");
+    }
+
+    long calStart = System.currentTimeMillis();
+    BitSet active = new BitSet();
+    active.set(0, PEOPLE_NUM);
+    for (int i = 1; i <= day; i++) {
+        BitSet bitSet = BitSet.valueOf(jedis.get((ONLINE_KEY_PREFIX + i).getBytes()));
+        active.and(bitSet);
+    }
+    long calEnd = System.currentTimeMillis();
+    System.out.println(day + "天的上线用户" + active.cardinality() + ",花费时长:" + (calEnd - calStart));
+}
+```
+
+测试方法
+
+```java
+@Test
+public void daliyActive() {
+    /**
+     *模拟数据
+     */
+    createData();
+
+    /**
+     * 开始统计
+     */
+    //1
+    calActive(1);
+
+    //7
+    calActive(7);
+
+    //15
+    calActive(15);
+
+    //30
+    calActive(30);
+}
+```
+
+测试结果
+
+```
+1天的上线用户9015,花费时长:0
+7天的上线用户4817,花费时长:0
+15天的上线用户2115,花费时长:0
+30天的上线用户431,花费时长:15
+```
+
+
+
+有需要看相关代码的请点击[GITHUB地址](https://github.com/rainbowda/learnWay/blob/master/learnRedis/command/src/main/java/com/learnRedis/string/BitmapCase.java)
+
+### 其他
+
+关于其他相关的命令可以查看下方地址
+
+[string全命令](https://github.com/rainbowda/learnWay/blob/master/learnRedis/command/src/main/java/com/learnRedis/string/README.md)
+
+[Redis基本命令](https://github.com/rainbowda/learnWay/blob/master/learnRedis/command/src/main/java/com/learnRedis/generic/README.md)
+
+### 参考资料
+
+[1]: https://redis.io/commands#string
+[2]: http://www.redis.cn/commands.html#string
 
