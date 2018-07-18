@@ -199,7 +199,7 @@ public class StringCommand extends RedisBaseConnection {
     }
 
     /**
-     * 对存储在指定key的数值执行原子的加1操作。没有对应的key则设置为0，在相加
+     * 对存储在指定key的数值执行原子的加1操作。没有对应的key则设置为0，再相加
      * INCR key
      * 返回值：增加之后的value值。
      * 命令：
@@ -213,7 +213,7 @@ public class StringCommand extends RedisBaseConnection {
     }
 
     /**
-     * 将key对应的数字加decrement。
+     * 将key对应的数字加increment。
      * INCRBY key increment
      * 返回值：增加之后的value值。
      * 命令：
@@ -242,7 +242,7 @@ public class StringCommand extends RedisBaseConnection {
     }
 
     /**
-     * 将存储的数字减key1。如果密钥不存在，则0在执行操作之前将其设置为。如果密钥包含错误类型的值或包含无法表示为整数的字符串，则会返回错误。该操作仅限于64位有符号整数。没有对应的key则设置为0，在相减
+     * 将存储的数字减key1。如果密钥不存在，则0在执行操作之前将其设置为。如果密钥包含错误类型的值或包含无法表示为整数的字符串，则会返回错误。该操作仅限于64位有符号整数。没有对应的key则设置为0，再相减
      * DECR key
      * 返回值：key减量后的值
      * 命令：

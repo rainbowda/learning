@@ -82,9 +82,6 @@ redis客户端执行的命令如下
 ```
 setex setExKey 5 setExValue
 ```
-执行结果如下
-
-![]()
 
 下面是java代码
 ```java
@@ -102,9 +99,6 @@ redis客户端执行的命令如下
 ```
 psetex setExKey 5000 setExValue
 ```
-执行结果如下
-
-![]()
 
 #### SETNX命令
 
@@ -255,9 +249,6 @@ redis客户端执行的命令如下
 ```
 incr incrKey
 ```
-执行结果如下
-
-![]()
 
 下面是java代码
 ```java
@@ -270,7 +261,7 @@ public void incr() {
 ```
 #### INCRBY命令
 
-将key对应的数字加decrement。
+将key对应的数字加iecrement。
 INCRBY key increment
 返回值：增加之后的value值。
 
@@ -278,9 +269,6 @@ redis客户端执行的命令如下
 ```
 incyby incyByKey 5
 ```
-执行结果如下
-
-![]()
 
 下面是java代码
 ```java
