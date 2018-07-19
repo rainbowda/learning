@@ -28,8 +28,8 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println(jedis.smembers("sAddKey"));
 
         //spring redisTemplate
-        redisTemplate.opsForSet().add("sAddKey", "hello", "redis");
-        System.out.println(redisTemplate.opsForSet().members("sAddKey"));
+        setOperations.add("sAddKey", "hello", "redis");
+        System.out.println(setOperations.members("sAddKey"));
     }
 
     /**
@@ -56,7 +56,7 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println(jedis.sismember("sIsMember", "hello"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForSet().isMember("sIsMember", "redis"));
+        System.out.println(setOperations.isMember("sIsMember", "redis"));
     }
 
     /**
@@ -75,7 +75,7 @@ public class SetCommand extends RedisBaseConnection {
 
         jedis.srem("sRemKey", "1", "3");
 
-        redisTemplate.opsForSet().remove("sRemKey", "1", "3");
+        setOperations.remove("sRemKey", "1", "3");
 
         System.out.println(jedis.smembers("sRemKey"));
     }
@@ -95,7 +95,7 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println(jedis.scard("sCardKey"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForSet().size("sCardKey"));
+        System.out.println(setOperations.size("sCardKey"));
     }
 
     /**
@@ -119,7 +119,7 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println("移动一个不存在的元素,结果:"+jedis.smove("sMoveKeySrc", "sMoveKeyDst", "5"));
 
         //spring redisTemplate
-        System.out.println("移动一个存在的元素,结果:" + redisTemplate.opsForSet().move("sMoveKeySrc","3", "sMoveKeyDst"));
+        System.out.println("移动一个存在的元素,结果:" + setOperations.move("sMoveKeySrc","3", "sMoveKeyDst"));
 
         System.out.println(jedis.smembers("sMoveKeyDst"));
     }
@@ -142,7 +142,7 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println(jedis.spop("sPopKey"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForSet().pop("sPopKey", 2));
+        System.out.println(setOperations.pop("sPopKey", 2));
 
         System.out.println(jedis.smembers("sPopKey"));
 
@@ -177,7 +177,7 @@ public class SetCommand extends RedisBaseConnection {
         System.out.println("count是个整数且大于集合中元素的个数时:" + jedis.srandmember("sRandMemberKey", -9));
 
         //spring redisTemplate默认支持重复的元素
-        System.out.println("count是负数,且绝对值大于元素的个数:" + redisTemplate.opsForSet().randomMembers("sRandMemberKey", 9));
+        System.out.println("count是负数,且绝对值大于元素的个数:" + setOperations.randomMembers("sRandMemberKey", 9));
     }
 
     /**
@@ -202,14 +202,13 @@ public class SetCommand extends RedisBaseConnection {
         List list = new ArrayList();
         list.add("sDiffKey2");
         list.add("sDiffKey3");
-        System.out.println(redisTemplate.opsForSet().difference("sDiffKey1",list));
+        System.out.println(setOperations.difference("sDiffKey1",list));
     }
 
     /**
      * 该命令类似于 SDIFF, 不同之处在于该命令不返回结果集，而是将结果存放在destination集合中.如果destination已经存在, 则将其覆盖重写.
      * SDIFFSTORE destination key [key ...]
      * 返回值：结果集元素的个数.
-     * 命令：
      */
     @Test
     public void sDiffStore() {}
@@ -236,7 +235,7 @@ public class SetCommand extends RedisBaseConnection {
         List list = new ArrayList();
         list.add("sInterKey2");
         list.add("sInterKey3");
-        System.out.println(redisTemplate.opsForSet().intersect("sInterKey1",list));
+        System.out.println(setOperations.intersect("sInterKey1",list));
     }
 
     /**
@@ -269,7 +268,7 @@ public class SetCommand extends RedisBaseConnection {
         List list = new ArrayList();
         list.add("sUnionKey2");
         list.add("sUnionKey3");
-        System.out.println(redisTemplate.opsForSet().union("sUnionKey1", list));
+        System.out.println(setOperations.union("sUnionKey1", list));
     }
 
     /**

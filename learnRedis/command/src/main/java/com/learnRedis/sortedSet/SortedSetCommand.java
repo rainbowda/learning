@@ -2,7 +2,10 @@ package com.learnRedis.sortedSet;
 
 import com.learnRedis.base.RedisBaseConnection;
 import org.junit.Test;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.core.ZSetOperations;
+import redis.clients.jedis.Tuple;
+import redis.clients.jedis.ZParams;
 import redis.clients.jedis.params.sortedset.ZAddParams;
 
 import java.util.ArrayList;
@@ -40,20 +43,106 @@ public class SortedSetCommand extends RedisBaseConnection {
 
 
         //spring redisTemplate
-        redisTemplate.opsForZSet().add("zAddKey", "one", 1);
-        redisTemplate.opsForZSet().add("zAddKey", "two", 2);
+        zSetOperations.add("zAddKey", "one", 1);
+        zSetOperations.add("zAddKey", "two", 2);
 
-        System.out.println(redisTemplate.opsForZSet().range("zAddKey", 0, -1));
+        System.out.println(zSetOperations.range("zAddKey", 0, -1));
     }
 
     /**
-     * 返回范围内的集合，加WITHSCORES参数显示分数
+     * 返回有序集key中，成员member的score值。
+     * ZSCORE key member
+     * 返回值：成员member的score值
+     * 命令：
+     * zadd zScoreKey 1 one
+     * ZSCORE zScoreKey one
+     */
+    @Test
+    public void zScore() {
+        jedis.zadd("zScoreKey",1, "one");
+
+        System.out.println(jedis.zscore("zScoreKey", "one"));
+
+        System.out.println(zSetOperations.score("zScoreKey", "one"));
+    }
+
+    /**
+     * 返回范围内的集合(从小到大)，加WITHSCORES参数显示分数
      * ZRANGE key start stop [WITHSCORES]
      * 返回值：
      * 命令：
      */
     @Test
     public void zRange() {}
+
+    /**
+     * 返回范围内的集合(从大到小)
+     * ZREVRANGE key start stop [WITHSCORES]
+     */
+    @Test
+    public void zRevRange() {}
+
+    /**
+     * 返回指定成员区间内的成员，按成员字典正序排序, 分数必须相同。http://www.redis.cn/commands/zrangebylex.html
+     * ZRANGEBYLEX key min max [LIMIT offset count]
+     * 返回值：指定成员范围的元素列表。
+     * 命令：
+     * ZADD zRangeByLexKey 0 ba 0 a 0 ab 0 aa 0 b
+     * ZRANGEBYLEX zRangeByLexKey - +
+     * ZRANGEBYLEX zRangeByLexKey [aa (ba
+     */
+    @Test
+    public void zRangeByLex() {
+        zSetOperations.add("zRangeByLexKey", "ba", 0);
+        zSetOperations.add("zRangeByLexKey", "a", 0);
+        zSetOperations.add("zRangeByLexKey", "ab", 0);
+        zSetOperations.add("zRangeByLexKey", "aa", 0);
+        zSetOperations.add("zRangeByLexKey", "b", 0);
+
+        System.out.println(jedis.zrangeByLex("zRangeByLexKey", "-", "+"));
+
+        RedisZSetCommands.Range range = new RedisZSetCommands.Range();
+        range.gte("aa");
+        range.lt("ba");
+        System.out.println(zSetOperations.rangeByLex("zRangeByLexKey",range));
+    }
+
+    /**
+     * 返回指定成员区间内的成员，按成员字典倒序排序
+     * ZREVRANGEBYLEX key max min [LIMIT offset count]
+     */
+    @Test
+    public void zRevRangeByLex() {}
+
+    /**
+     * 获取score在范围之内的数据。min和max可以是-inf和+inf
+     * ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
+     * 返回值：
+     * 命令：
+     * ZADD zRangeByScoreKey 1 ba 2 a 3 ab 4 aa 5 b
+     * ZRANGEBYSCORE zRangeByScoreKey -inf +inf
+     * ZRANGEBYSCORE zRangeByScoreKey 2 4
+     */
+    @Test
+    public void zRangeByScore() {
+        zSetOperations.add("zRangeByScoreKey", "ba", 1);
+        zSetOperations.add("zRangeByScoreKey", "a", 2);
+        zSetOperations.add("zRangeByScoreKey", "ab", 3);
+        zSetOperations.add("zRangeByScoreKey", "aa", 4);
+        zSetOperations.add("zRangeByScoreKey", "b", 5);
+
+        System.out.println(jedis.zrangeByScore("zRangeByScoreKey", "-inf", "+inf"));
+
+        RedisZSetCommands.Range range = new RedisZSetCommands.Range();
+        System.out.println(zSetOperations.rangeByScore("zRangeByScoreKey", 2, 4));
+    }
+
+    /**
+     * 返回有序集合中指定分数区间内的成员，分数由高到低排序
+     * ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
+     */
+    @Test
+    public void zRevRangeByScore() {}
 
     /**
      * 返回key的有序集元素个数。
@@ -70,7 +159,7 @@ public class SortedSetCommand extends RedisBaseConnection {
 
         System.out.println(jedis.zcard("zCardKey"));
 
-        System.out.println(redisTemplate.opsForZSet().size("zCardKey"));
+        System.out.println(zSetOperations.size("zCardKey"));
     }
 
     /**
@@ -90,7 +179,7 @@ public class SortedSetCommand extends RedisBaseConnection {
 
         System.out.println(jedis.zcount("zCountKey",2, 3));
 
-        System.out.println(redisTemplate.opsForZSet().count("zCountKey",2, 3));
+        System.out.println(zSetOperations.count("zCountKey",2, 3));
     }
 
     /**
@@ -111,12 +200,62 @@ public class SortedSetCommand extends RedisBaseConnection {
     public void zIncrBy() {
         jedis.zincrby("zIncrByKey", 2, "score");
 
-        redisTemplate.opsForZSet().incrementScore("zIncrByKey", "score", 5);
+        zSetOperations.incrementScore("zIncrByKey", "score", 5);
 
-        Set<ZSetOperations.TypedTuple> set = redisTemplate.opsForZSet().rangeWithScores("zIncrByKey", 0, -1);
+        Set<ZSetOperations.TypedTuple> set = zSetOperations.rangeWithScores("zIncrByKey", 0, -1);
         for (ZSetOperations.TypedTuple typedTuple : set){
             System.out.println(typedTuple.getValue()+":"+typedTuple.getScore());
         }
+    }
+
+    /**
+     * 计算给定的numkeys个有序集合的并集，并且把结果放到destination中。
+     * WEIGHTS参数相当于权重，默认就是1，可以给不同的key设置不同的权重
+     * AGGREGATE参数默认使用的参数SUM，还可以选择MIN或者MAX。这个参数决定结果集的score是取给定集合中的相加值、最小值还是最大值
+     * ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
+     * 返回值：
+     * 命令：
+     * ZADD zUnionStoreKey1 1 "one" 2 "two"
+     * ZADD zUnionStoreKey2 1 "one" 2 "two" 3 "three"
+     * ZUNIONSTORE zUnionStoreSumResult 2 zUnionStoreKey1 zUnionStoreKey2 WEIGHTS 2 3
+     * ZUNIONSTORE zUnionStoreMinResult 2 zUnionStoreKey1 zUnionStoreKey2 WEIGHTS 2 3 AGGREGATE MIN
+     * ZUNIONSTORE zUnionStoreMaxResult 2 zUnionStoreKey1 zUnionStoreKey2 WEIGHTS 2 3 AGGREGATE MAX
+     *
+     * ZRANGE zUnionStoreSumResult 0 -1 WITHSCORES
+     * ZRANGE zUnionStoreMinResult 0 -1 WITHSCORES
+     * ZRANGE zUnionStoreMaxResult 0 -1 WITHSCORES
+     */
+    @Test
+    public void zUnionStore() {
+        zSetOperations.add("zUnionStoreKey1", "one", 1);
+        zSetOperations.add("zUnionStoreKey1", "two", 2);
+
+        zSetOperations.add("zUnionStoreKey2", "one", 1);
+        zSetOperations.add("zUnionStoreKey2", "two", 2);
+        zSetOperations.add("zUnionStoreKey2", "three", 3);
+
+
+        ZParams zParams = new ZParams();
+        zParams.weightsByDouble(2, 3);
+        zParams.aggregate(ZParams.Aggregate.SUM);
+        jedis.zunionstore("zUnionStoreSumResult", zParams, "zUnionStoreKey1", "zUnionStoreKey2");
+
+        //求最小值
+        zParams.aggregate(ZParams.Aggregate.MIN);
+        jedis.zunionstore("zUnionStoreMinResult", zParams, "zUnionStoreKey1", "zUnionStoreKey2");
+
+        //求最大值
+        zParams.aggregate(ZParams.Aggregate.MAX);
+        jedis.zunionstore("zUnionStoreMaxResult", zParams, "zUnionStoreKey1", "zUnionStoreKey2");
+
+        //spring
+        zSetOperations.unionAndStore("zUnionStoreKey1", "zUnionStoreKey2", "zUnionStoreResult");
+
+
+        printTuple("zUnionStoreSumResult", jedis.zrangeWithScores("zUnionStoreSumResult", 0, -1));
+        printTuple("zUnionStoreMinResult", jedis.zrangeWithScores("zUnionStoreMinResult", 0, -1));
+        printTuple("zUnionStoreMaxResult", jedis.zrangeWithScores("zUnionStoreMaxResult", 0, -1));
+        printTuple("zUnionStoreResult", jedis.zrangeWithScores("zUnionStoreResult", 0, -1));
     }
 
     /**
@@ -129,172 +268,128 @@ public class SortedSetCommand extends RedisBaseConnection {
      * ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
      * 返回值：结果有序集合destination中元素个数。
      * 命令：
+     * ZADD zInterStoreKey1 1 "one" 2 "two"
+     * ZADD zInterStoreKey2 1 "one" 2 "two" 3 "three"
+     * ZINTERSTORE zInterStoreSumResult 2 zInterStoreKey1 zInterStoreKey2 WEIGHTS 2 3
+     *
+     * ZRANGE zInterStoreSumResult 0 -1 WITHSCORES
      */
     @Test
     public void zInterStore() {
+        zSetOperations.add("zInterStoreKey1", "one", 1);
+        zSetOperations.add("zInterStoreKey1", "two", 2);
+
+        zSetOperations.add("zInterStoreKey2", "one", 1);
+        zSetOperations.add("zInterStoreKey2", "two", 2);
+        zSetOperations.add("zInterStoreKey2", "three", 3);
+
+
+        ZParams zParams = new ZParams();
+        zParams.weightsByDouble(2, 3);
+        zParams.aggregate(ZParams.Aggregate.SUM);
+        jedis.zinterstore("zInterStoreSumResult", zParams, "zInterStoreKey1", "zInterStoreKey2");
+
+        printTuple("zInterStoreSumResult", jedis.zrangeWithScores("zInterStoreSumResult", 0, -1));
     }
 
     /**
-     *
+     * 计算有序集合中指定成员之间的成员数量(按成员字典正序排序),可以使用 - 和 + 表示score最小值和最大值
      * ZLEXCOUNT key min max
      * 返回值：
      * 命令：
+     * ZADD zLexCountKey 2 "b" 1 "a" 3 "c" 5 "e" 4 "d"
+     * ZLEXCOUNT zLexCountKey - +
+     * ZLEXCOUNT zLexCountKey [b [d
      */
     @Test
     public void zLexCount() {
-    }
+        zSetOperations.add("zLexCountKey", "b", 2);
+        zSetOperations.add("zLexCountKey", "a", 1);
+        zSetOperations.add("zLexCountKey", "c", 3);
+        zSetOperations.add("zLexCountKey", "e", 5);
+        zSetOperations.add("zLexCountKey", "d", 4);
 
-    /**
-     *
-     * ZPOPMAX key [count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zPopMax() {
-    }
+        System.out.println(jedis.zlexcount("zLexCountKey", "-", "+"));
 
-    /**
-     *
-     * ZPOPMIN key [count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zPopMin() {
+        System.out.println(jedis.zlexcount("zLexCountKey", "[b", "[d"));
     }
 
 
     /**
-     *
-     * ZRANGEBYLEX key min max [LIMIT offset count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRangeByLex() {
-    }
-
-    /**
-     *
-     * ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRangeByScore() {
-    }
-
-    /**
-     *
+     * 返回有序集key中成员member的排名。其中有序集成员按score值递增(从小到大)顺序排列。
      * ZRANK key member
-     * 返回值：
-     * 命令：
      */
     @Test
-    public void zRank() {
-    }
+    public void zRank() {}
 
     /**
-     *
-     * ZREM key member [member ...]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRem() {
-    }
-
-    /**
-     *
-     * ZREMRANGEBYLEX key min max
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRemRangeByLex() {
-    }
-
-    /**
-     *
-     * ZREMRANGEBYRANK key start stop
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRemRangeByRank() {
-    }
-
-    /**
-     *
-     * ZREMRANGEBYSCORE key min max
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRemRangeByScore() {
-    }
-
-    /**
-     *
-     * ZREVRANGE key start stop [WITHSCORES]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRevRange() {
-    }
-
-    /**
-     *
-     * ZREVRANGEBYLEX key max min [LIMIT offset count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRevRangeByLex() {
-    }
-
-    /**
-     *
-     * ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
-     * 返回值：
-     * 命令：
-     */
-    @Test
-    public void zRevRangeByScore() {
-    }
-
-    /**
-     *
+     * 返回有序集key中成员member的排名。其中有序集成员按score值递增(从大到小)顺序排列。
      * ZREVRANK key member
-     * 返回值：
+     * 返回值：如果member是有序集key的成员，返回的排名。否则返回nil
      * 命令：
+     * ZADD zRankKey 1 "one" 2 "two" 3 "three"
+     * ZRANK zRankKey three
+     * ZREVRANK zRankKey three
      */
     @Test
     public void zRevRank() {
+        zSetOperations.add("zRankKey", "one", 1);
+        zSetOperations.add("zRankKey", "two", 2);
+        zSetOperations.add("zRankKey", "three", 3);
+
+        System.out.println(jedis.zrank("zRankKey", "three"));
+
+        System.out.println(zSetOperations.reverseRank("zRankKey", "three"));
     }
 
     /**
-     *
-     * ZSCORE key member
-     * 返回值：
+     * 删除成员
+     * ZREM key member [member ...]
+     * 返回值：有序集合中删除的成员个数
      * 命令：
+     * ZADD zRemKey 1 "one" 2 "two" 3 "three"
+     * ZREM zRemKey one
+     * ZRANGE zRemKey 0 -1
      */
     @Test
-    public void zScore() {
+    public void zRem() {
+        zSetOperations.add("zRemKey", "one", 1);
+        zSetOperations.add("zRemKey", "two", 2);
+        zSetOperations.add("zRemKey", "three", 3);
+
+        //jedis.zrem("zRemKey", "one");
+        zSetOperations.remove("zRemKey", "one");
+
+        System.out.println(zSetOperations.range("zRemKey", 0 , -1));
     }
 
     /**
+     * 删除名称按字典由低到高排序成员之间所有成员。
+     * ZREMRANGEBYLEX key min max
+     * 返回值：有序集合中删除的成员个数
+     * 命令：
      *
-     * ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
-     * 返回值：
+     */
+    @Test
+    public void zRemRangeByLex() {}
+
+    /**
+     * 移除有序集key中，指定排名(rank)区间内的所有成员。
+     * ZREMRANGEBYRANK key start stop
+     * 返回值：有序集合中删除的成员个数
      * 命令：
      */
     @Test
-    public void zUnionStore() {
-    }
+    public void zRemRangeByRank() {}
 
+    /**
+     * 移除有序集key中，所有score值介于min和max之间(包括等于min或max)的成员。
+     * ZREMRANGEBYSCORE key min max
+     * 返回值：有序集合中删除的成员个数
+     * 命令：
+     */
+    @Test
+    public void zRemRangeByScore() {}
 
     /**
      *
@@ -307,23 +402,54 @@ public class SortedSetCommand extends RedisBaseConnection {
     }
 
     /**
-     *
-     * BZPOPMIN key [key ...] timeout
-     * 返回值：
-     * 命令：
+     * 注：下方命令的redis版本5.0
      */
-    @Test
-    public void bzPopMin() {
-    }
 
     /**
+     * 移除且返回score最大的值
+     * ZPOPMAX key [count]
+     * 返回值：被移除的score和值
+     * 命令：
      *
+     */
+    @Test
+    public void zPopMax() {}
+
+    /**
+     * 移除且返回score最大的值，没有值时会阻塞
      * BZPOPMAX key [key ...] timeout
      * 返回值：
      * 命令：
      */
     @Test
-    public void bzPopMax() {
-    }
+    public void bzPopMax() {}
 
+    /**
+     * 移除且返回score最小的值
+     * ZPOPMIN key [count]
+     * 返回值：被移除的score和值
+     * 命令：
+     * ZADD zPopKey 2 "b" 1 "a" 3 "c" 5 "e" 4 "d"
+     * ZPOPMIN zPopKey
+     * ZPOPMAX zPopKey
+     */
+    @Test
+    public void zPopMin() {}
+
+    /**
+     * 移除且返回score最小的值，没有值时会阻塞
+     * BZPOPMIN key [key ...] timeout
+     */
+    @Test
+    public void bzPopMin() {}
+
+
+    //输出带分数的set
+    private void printTuple(String name,Set<Tuple> tupleSet){
+        System.out.print(name+":{");
+        for (Tuple tuple : tupleSet){
+            System.out.print("["+tuple.getElement()+":"+tuple.getScore()+"]");
+        }
+        System.out.println("}");
+    }
 }

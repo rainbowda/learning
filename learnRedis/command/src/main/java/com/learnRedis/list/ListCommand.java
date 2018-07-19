@@ -85,17 +85,17 @@ public class ListCommand extends RedisBaseConnection {
         jedis.lpush("listKey", "headValue1", "headValue2");
         jedis.rpush("listKey", "endValue1", "endValue2");
 
-        redisTemplate.opsForList().leftPushIfPresent("listKey", "headValue");
-        redisTemplate.opsForList().rightPushIfPresent("listKey", "endValue");
+        listOperations.leftPushIfPresent("listKey", "headValue");
+        listOperations.rightPushIfPresent("listKey", "endValue");
 
         System.out.println(jedis.llen("listKey"));
-        System.out.println(redisTemplate.opsForList().size("listKey"));
+        System.out.println(listOperations.size("listKey"));
 
         System.out.println(jedis.lpop("listKey"));
         System.out.println(jedis.rpop("listKey"));
 
-        System.out.println(redisTemplate.opsForList().leftPop("listKey"));
-        System.out.println(redisTemplate.opsForList().rightPop("listKey"));
+        System.out.println(listOperations.leftPop("listKey"));
+        System.out.println(listOperations.rightPop("listKey"));
 
     }
 
@@ -114,7 +114,7 @@ public class ListCommand extends RedisBaseConnection {
         System.out.println(jedis.lrange("lRangeKey", 0 , -1));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForList().range("lRangeKey", 0 , -1));
+        System.out.println(listOperations.range("lRangeKey", 0 , -1));
     }
 
     /**
@@ -151,7 +151,7 @@ public class ListCommand extends RedisBaseConnection {
         jedis.rpush("rPoplPushKey", "1", "2", "3", "4", "5");
 
         jedis.rpoplpush("rPoplPushKey", "rPoplPushKey");
-        redisTemplate.opsForList().rightPopAndLeftPush("rPoplPushKey", "rPoplPushKey");
+        listOperations.rightPopAndLeftPush("rPoplPushKey", "rPoplPushKey");
 
         System.out.println(jedis.lrange("rPoplPushKey", 0 , -1));
     }
@@ -170,7 +170,7 @@ public class ListCommand extends RedisBaseConnection {
         jedis.rpush("lIndexKey", "1", "2", "3");
 
         System.out.println(jedis.lindex("lIndexKey", 1));
-        System.out.println(redisTemplate.opsForList().index("lIndexKey", 2));
+        System.out.println(listOperations.index("lIndexKey", 2));
     }
 
     /**
@@ -188,7 +188,7 @@ public class ListCommand extends RedisBaseConnection {
         jedis.rpush("lSetKey", "1", "2", "3");
 
         jedis.lset("lSetKey", 0, "4");
-        redisTemplate.opsForList().set("lSetKey", 2, "6");
+        listOperations.set("lSetKey", 2, "6");
 
         System.out.println(jedis.lrange("lSetKey", 0 , -1));
     }
@@ -209,7 +209,7 @@ public class ListCommand extends RedisBaseConnection {
         jedis.rpush("lLenKey", "1", "2", "3");
 
         System.out.println(jedis.llen("lLenKey"));
-        System.out.println(redisTemplate.opsForList().size("lLenKey"));
+        System.out.println(listOperations.size("lLenKey"));
     }
 
 
@@ -238,11 +238,11 @@ public class ListCommand extends RedisBaseConnection {
         jedis.lrem("lRemKey", 1, "0");
         System.out.println("使用jedis移除头部值为0的1个元素，结果：" + jedis.lrange("lRemKey", 0 , -1));
 
-        redisTemplate.opsForList().remove("lRemKey", -1, "0");
-        System.out.println("使用jedis移除尾部值为0的1个元素，结果：" + redisTemplate.opsForList().range("lRemKey", 0 , -1));
+        listOperations.remove("lRemKey", -1, "0");
+        System.out.println("使用jedis移除尾部值为0的1个元素，结果：" + listOperations.range("lRemKey", 0 , -1));
 
-        redisTemplate.opsForList().remove("lRemKey", 0, "0");
-        System.out.println("使用jedis移除所有值为0的1个元素，结果：" + redisTemplate.opsForList().range("lRemKey", 0 , -1));
+        listOperations.remove("lRemKey", 0, "0");
+        System.out.println("使用jedis移除所有值为0的1个元素，结果：" + listOperations.range("lRemKey", 0 , -1));
     }
 
 
@@ -265,8 +265,8 @@ public class ListCommand extends RedisBaseConnection {
         jedis.ltrim("lTrimKey", 1, 3);
         System.out.println(jedis.lrange("lTrimKey", 0 , -1));
 
-        redisTemplate.opsForList().trim("lTrimKey", 1, 2);
-        System.out.println(redisTemplate.opsForList().range("lTrimKey", 0 , -1));
+        listOperations.trim("lTrimKey", 1, 2);
+        System.out.println(listOperations.range("lTrimKey", 0 , -1));
     }
 
 
@@ -295,7 +295,7 @@ public class ListCommand extends RedisBaseConnection {
             try {
                 Thread.sleep(3000);
                 //jedis.lpush("blPopKey", "value");这个jedis客户端会被阻塞
-                redisTemplate.opsForList().leftPush("blPopKey", "value");
+                listOperations.leftPush("blPopKey", "value");
                 System.out.println("redisTemplate插入完成:" + LocalDateTime.now());
             } catch (InterruptedException e) {
                 e.printStackTrace();

@@ -40,7 +40,7 @@ public class StringCommand extends RedisBaseConnection {
         String getValue = jedis.get("getKey");
         System.out.println(getValue);
 
-        Object objectValue = redisTemplate.opsForValue().get("getKey");
+        Object objectValue = valueOperations.get("getKey");
         System.out.println(objectValue);
     }
 
@@ -69,8 +69,8 @@ public class StringCommand extends RedisBaseConnection {
         Boolean bitKey = jedis.getbit("bitKey", 0L);
         System.out.println(bitKey);
 
-        redisTemplate.opsForValue().setBit("bitKey",1L,true);
-        bitKey = redisTemplate.opsForValue().getBit("bitKey", 1L);
+        valueOperations.setBit("bitKey",1L,true);
+        bitKey = valueOperations.getBit("bitKey", 1L);
         System.out.println(bitKey);
     }
     /**
@@ -113,7 +113,7 @@ public class StringCommand extends RedisBaseConnection {
     @Test
     public void setNx() {
         Long result = jedis.setnx("setNxKey", "setNxValue");
-        Boolean flag = redisTemplate.opsForValue().setIfAbsent("setNxKey", "setNxValue");
+        Boolean flag = valueOperations.setIfAbsent("setNxKey", "setNxValue");
 
         System.out.println("jedis执行结果："+result);
         System.out.println("spring执行结果："+flag);
@@ -136,8 +136,8 @@ public class StringCommand extends RedisBaseConnection {
         System.out.println(jedis.get("setRangeKey"));
 
         //spring
-        redisTemplate.opsForValue().set("setRangeKey", "learyRedis", 6);
-        System.out.println(redisTemplate.opsForValue().get("setRangeKey"));
+        valueOperations.set("setRangeKey", "learyRedis", 6);
+        System.out.println(valueOperations.get("setRangeKey"));
     }
 
     /**
@@ -156,7 +156,7 @@ public class StringCommand extends RedisBaseConnection {
         System.out.println(jedis.getrange("getRangeKey", 6, -1));
 
         //spring
-        System.out.println(redisTemplate.opsForValue().get("getRangeKey", 0, -12));
+        System.out.println(valueOperations.get("getRangeKey", 0, -12));
     }
 
     /**
@@ -175,9 +175,9 @@ public class StringCommand extends RedisBaseConnection {
 
         jedis.set("getSetKey", "value");
 
-        Object newValue = redisTemplate.opsForValue().getAndSet("getSetKey", "newValue");
+        Object newValue = valueOperations.getAndSet("getSetKey", "newValue");
         System.out.println(newValue);
-        System.out.println(redisTemplate.opsForValue().get("getSetKey"));
+        System.out.println(valueOperations.get("getSetKey"));
     }
 
     /**
@@ -193,7 +193,7 @@ public class StringCommand extends RedisBaseConnection {
     public void append() {
         jedis.append("appendKey","append");
 
-        redisTemplate.opsForValue().append("appendKey","Value");
+        valueOperations.append("appendKey","Value");
 
         System.out.println(jedis.get("appendKey"));
     }
@@ -209,7 +209,7 @@ public class StringCommand extends RedisBaseConnection {
     public void incr() {
         System.out.println(jedis.incr("incrKey"));
 
-        System.out.println(redisTemplate.opsForValue().increment("incrKey", 1L));
+        System.out.println(valueOperations.increment("incrKey", 1L));
     }
 
     /**
@@ -223,7 +223,7 @@ public class StringCommand extends RedisBaseConnection {
     public void incrBy() {
         System.out.println(jedis.incrBy("incyByKey", 5));
 
-        System.out.println(redisTemplate.opsForValue().increment("incrByKey", 5L));
+        System.out.println(valueOperations.increment("incrByKey", 5L));
     }
 
     /**
@@ -238,7 +238,7 @@ public class StringCommand extends RedisBaseConnection {
     public void incrByFloat() {
         System.out.println(jedis.incrByFloat("incrByFloatKey", 5.11));
 
-        System.out.println(redisTemplate.opsForValue().increment("incrByFloatKey", 5.22));
+        System.out.println(valueOperations.increment("incrByFloatKey", 5.22));
     }
 
     /**
@@ -262,7 +262,7 @@ public class StringCommand extends RedisBaseConnection {
         Long decrValue = jedis.decr("decrKey");
         System.out.println(decrValue);
 
-        decrValue = redisTemplate.opsForValue().increment("decrKey", -1L);
+        decrValue = valueOperations.increment("decrKey", -1L);
         System.out.println(decrValue);
 
         jedis.set("decrKey", "6666666666666666666666666666666666");
@@ -285,7 +285,7 @@ public class StringCommand extends RedisBaseConnection {
         Long decrByValue = jedis.decrBy("decrByKey", 2);
         System.out.println(decrByValue);
 
-        decrByValue = redisTemplate.opsForValue().increment("decrByKey", -2L);
+        decrByValue = valueOperations.increment("decrByKey", -2L);
         System.out.println(decrByValue);
 
     }
@@ -321,8 +321,8 @@ public class StringCommand extends RedisBaseConnection {
         map.put("mGetKey1", "mGetValue1");
         map.put("mGetKey2", "mGetValue2");
         map.put("mGetKey3", "mGetValue3");
-        redisTemplate.opsForValue().multiSet(map);
-        System.out.println(redisTemplate.opsForValue().multiGet(map.keySet()));
+        valueOperations.multiSet(map);
+        System.out.println(valueOperations.multiGet(map.keySet()));
     }
 
     /**
@@ -344,7 +344,7 @@ public class StringCommand extends RedisBaseConnection {
         Map<String, String> map = new HashMap<>(3);
         map.put("mSetNxKey2", "mSetNxValue2");
         map.put("mSetNxKey3", "mSetNxValue3");
-        System.out.println(redisTemplate.opsForValue().multiSetIfAbsent(map));
+        System.out.println(valueOperations.multiSetIfAbsent(map));
     }
 
 
@@ -362,7 +362,7 @@ public class StringCommand extends RedisBaseConnection {
 
         System.out.println(jedis.strlen("strLenKey"));
 
-        System.out.println(redisTemplate.opsForValue().size("strLenKey"));
+        System.out.println(valueOperations.size("strLenKey"));
     }
 
     /**

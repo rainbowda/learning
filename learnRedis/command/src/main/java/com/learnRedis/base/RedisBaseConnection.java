@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
@@ -18,8 +18,29 @@ import java.util.Set;
 public class RedisBaseConnection {
     protected static Jedis jedis = null;
 
-    @Resource
+
     protected RedisTemplate redisTemplate;
+
+    protected ValueOperations valueOperations;
+
+    protected HashOperations hashOperations;
+
+    protected ListOperations listOperations;
+
+    protected SetOperations setOperations;
+
+    protected ZSetOperations zSetOperations;
+
+
+    @Resource
+    public void setRedisTemplate(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+        this.valueOperations = redisTemplate.opsForValue();
+        this.hashOperations = redisTemplate.opsForHash();
+        this.listOperations = redisTemplate.opsForList();
+        this.setOperations = redisTemplate.opsForSet();
+        this.zSetOperations = redisTemplate.opsForZSet();
+    }
 
     /**
      * 连接

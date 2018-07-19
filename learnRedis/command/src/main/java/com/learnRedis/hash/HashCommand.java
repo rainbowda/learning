@@ -49,17 +49,17 @@ public class HashCommand extends RedisBaseConnection {
     @Test
     public void hGetAll() {
         jedis.hset("key", "field1", "Hi");
-        redisTemplate.opsForHash().put("key", "field1", "Hello");
+        hashOperations.put("key", "field1", "Hello");
 
         System.out.println(jedis.hsetnx("key", "field1", "Hello"));
-        System.out.println(redisTemplate.opsForHash().putIfAbsent("key", "field2", "Hello"));
+        System.out.println(hashOperations.putIfAbsent("key", "field2", "Hello"));
 
         System.out.println(jedis.hget("key", "field1"));
         System.out.println(jedis.hgetAll("key"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().get("key", "field1"));
-        System.out.println(redisTemplate.opsForHash().entries("key"));
+        System.out.println(hashOperations.get("key", "field1"));
+        System.out.println(hashOperations.entries("key"));
     }
 
     /**
@@ -78,7 +78,7 @@ public class HashCommand extends RedisBaseConnection {
         System.out.println(jedis.hdel("hDelKey", "filed1"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().delete("hDelKey","filed1"));
+        System.out.println(hashOperations.delete("hDelKey","filed1"));
     }
 
     /**
@@ -98,8 +98,8 @@ public class HashCommand extends RedisBaseConnection {
         System.out.println(jedis.hexists("hExistsKey", "filed2"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().hasKey("hExistsKey", "filed1"));
-        System.out.println(redisTemplate.opsForHash().hasKey("hExistsKey", "filed2"));
+        System.out.println(hashOperations.hasKey("hExistsKey", "filed1"));
+        System.out.println(hashOperations.hasKey("hExistsKey", "filed2"));
     }
 
     /**
@@ -113,7 +113,7 @@ public class HashCommand extends RedisBaseConnection {
     public void hIncrBy() {
         System.out.println(jedis.hincrBy("hIncrByKey", "field", 2));
 
-        System.out.println(redisTemplate.opsForHash().increment("hIncrByKey", "field", 3));
+        System.out.println(hashOperations.increment("hIncrByKey", "field", 3));
     }
 
     /**
@@ -127,7 +127,7 @@ public class HashCommand extends RedisBaseConnection {
     public void hIncrByFloat() {
         System.out.println(jedis.hincrByFloat("hIncrByFloatKey", "field", 2.22));
 
-        System.out.println(redisTemplate.opsForHash().increment("hIncrByFloatKey", "field", 3.33));
+        System.out.println(hashOperations.increment("hIncrByFloatKey", "field", 3.33));
     }
 
     /**
@@ -147,11 +147,11 @@ public class HashCommand extends RedisBaseConnection {
         System.out.println(jedis.hkeys("hashKey"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().keys("hashKey"));
+        System.out.println(hashOperations.keys("hashKey"));
         /**
          * 注：两次结果返回的顺序是不一样的，
          * 因为jedis.hkeys返回的是HashSet(内部使用HashMap)
-         * redisTemplate.opsForHash().keys返回的是LinkHashSet（内部使用LinkHashMap）
+         * hashOperations.keys返回的是LinkHashSet（内部使用LinkHashMap）
          */
     }
 
@@ -175,7 +175,7 @@ public class HashCommand extends RedisBaseConnection {
         System.out.println(jedis.hvals("key"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().values("key"));
+        System.out.println(hashOperations.values("key"));
     }
 
     /**
@@ -194,7 +194,7 @@ public class HashCommand extends RedisBaseConnection {
         System.out.println(jedis.hlen("hLenKey"));
 
         //spring redisTemplate
-        System.out.println(redisTemplate.opsForHash().size("hLenKey"));
+        System.out.println(hashOperations.size("hLenKey"));
     }
 
     /**
@@ -241,8 +241,8 @@ public class HashCommand extends RedisBaseConnection {
         jedis.flushDB();
 
         //spring redisTemplate
-        redisTemplate.opsForHash().putAll("key", map);
-        System.out.println(redisTemplate.opsForHash().multiGet("key", map.keySet()));
+        hashOperations.putAll("key", map);
+        System.out.println(hashOperations.multiGet("key", map.keySet()));
     }
 
     /**
