@@ -31,6 +31,10 @@ public class RedisBaseConnection {
 
     protected ZSetOperations zSetOperations;
 
+    protected GeoOperations geoOperations;
+
+    protected HyperLogLogOperations hyperLogLogOperations;
+
 
     @Resource
     public void setRedisTemplate(RedisTemplate redisTemplate) {
@@ -40,6 +44,9 @@ public class RedisBaseConnection {
         this.listOperations = redisTemplate.opsForList();
         this.setOperations = redisTemplate.opsForSet();
         this.zSetOperations = redisTemplate.opsForZSet();
+        this.geoOperations = redisTemplate.opsForGeo();
+        this.hyperLogLogOperations = redisTemplate.opsForHyperLogLog();
+
     }
 
     /**
