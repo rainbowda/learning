@@ -11,38 +11,72 @@
     <div class="layout">
         <layout>
             <i-header>
-                <i-menu mode="horizontal" theme="dark" active-name="1" >
-                    <div class="layout-nav">
-                        <menu-item name="addMyLog" >
-                            <icon type="ios-navigate"></icon>
-                            新增
-                        </menu-item>
-                        <menu-item name="delMyLog">
-                            <icon type="ios-keypad"></icon>
-                            删除
-                        </menu-item>
-                    </div>
-                </i-menu>
+                <div class="layout-nav">
+                    通讯录
+                </div>
             </i-header>
             <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover  style="margin: 32px 0">
+                <Card dis-hover v-for="item in contactsData" style="margin: 32px 0">
                     <p slot="title">
-                        <Icon type="clock"></Icon>
+                        <Icon type="ios-list-outline"></Icon>
 
                     </p>
-                    <a href="#" slot="extra"  style="padding-right: 20px">
+                    <a href="#" slot="extra" @click="openEditModel(item)" style="padding-right: 20px">
                         <Icon type="edit"></Icon>
-                        更新
+                        查看
                     </a>
-                    <a  href="#" slot="extra" >
+                    <a  href="#" slot="extra" @click="del(item.id)">
                         <Icon type="ios-trash-outline"></Icon>
                         删除
                     </a>
-
+                    {{ item.name }}
                 </Card>
             </i-content>
+            <i-footer>
+                <div style="text-align: center">
+                    <i-button type="primary" @click="openAddModel" size="large" shape="circle" icon="plus-round" ></i-button>
+                </div>
+            </i-footer>
         </layout>
     </div>
+
+    <Modal title="新增联系人" v-model="modalVisible" :mask-closable='false' :width="500" :styles="{top: '30px'}">
+        <i-form ref="form" :model="form" :label-width="70" :rules="formValidate">
+            <form-item label="name" prop="name">
+                <i-input v-model="form.name"/>
+            </form-item>
+            <form-item label="phone" prop="phone">
+                <i-input v-model="form.phone"/>
+            </form-item>
+        </i-form>
+        <div slot="footer">
+            <i-button type="text" @click="cancel">取消</i-button>
+            <i-button type="primary" :loading="submitLoading" @click="submit">提交</i-button>
+        </div>
+    </Modal>
+
+    <Modal title="查看联系人" v-model="viewModalVisible" :mask-closable='false' :width="500" :styles="{top: '30px'}">
+        <i-table stripe :columns="columns" :data="currentItem"></i-table>
+        <div slot="footer">
+            <i-button type="primary" :loading="submitLoading" @click="openAttrModel">添加属性</i-button>
+            <i-button type="primary" :loading="submitLoading" @click="closeViewModal">关闭</i-button>
+        </div>
+    </Modal>
+
+    <Modal title="新增属性" v-model="attrModalVisible" :mask-closable='false' :width="500" :styles="{top: '30px'}">
+        <i-form ref="attrForm" :model="attrForm" :label-width="70" :rules="attrFormValidate">
+            <form-item label="name" prop="fieldName">
+                <i-input v-model="attrForm.fieldName"/>
+            </form-item>
+            <form-item label="value" prop="fieldValue">
+                <i-input v-model="attrForm.fieldValue"/>
+            </form-item>
+        </i-form>
+        <div slot="footer">
+            <i-button type="text" @click="cancelAttr">取消</i-button>
+            <i-button type="primary" :loading="submitAttrLoading" @click="submitAttr">提交</i-button>
+        </div>
+    </Modal>
 </div>
 </body>
 </html>
