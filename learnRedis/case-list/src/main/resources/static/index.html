@@ -13,36 +13,76 @@
             <i-header>
                 <i-menu mode="horizontal" theme="dark" active-name="1" >
                     <div class="layout-nav">
-                        <menu-item name="addMyLog" >
-                            <icon type="ios-navigate"></icon>
-                            新增
-                        </menu-item>
-                        <menu-item name="delMyLog">
-                            <icon type="ios-keypad"></icon>
-                            删除
-                        </menu-item>
                     </div>
                 </i-menu>
             </i-header>
-            <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover  style="margin: 32px 0">
-                    <p slot="title">
-                        <Icon type="clock"></Icon>
+            <i-content :style="{padding: '10px 50px'}">
+                <row>
+                    <i-col>
+                    <card>
+                        <row style="margin-bottom: 2px">
+                            <i-col span="9">
+                                <card dis-hover  style="margin: 10px 5px;    height: 600px;overflow-y: scroll;" >
+                                    <p slot="title">
+                                        <Icon type="ios-list-outline"></Icon>
+                                        队列数据-共{{listDataSize}}条
+                                    </p>
+                                    <card dis-hover v-for="item in listData" style="margin: 32px 0">
+                                        {{ item }}
+                                    </card>
+                                </card>
+                            </i-col>
+                            <i-col span="6">
+                                <card dis-hover  style="margin: 10px 5px">
+                                    <p slot="title">
+                                        <Icon type="ios-list-outline"></Icon>
+                                        队列插入操作
+                                    </p>
+                                    <i-button @click="openLeftPushModel" type="ghost" icon="plus-circled">左边插入</i-button>
+                                    <i-button @click="openRightPushModel" type="ghost" icon="plus-circled">右边插入</i-button>
+                                </card>
+                                <card dis-hover  style="margin: 10px 5px">
+                                    <p slot="title">
+                                        <Icon type="ios-list-outline"></Icon>
+                                        队列弹出操作
+                                    </p>
+                                    <i-button @click="leftPop" type="ghost" icon="trash-a">左边弹出</i-button>
+                                    <i-button @click="rightPop" type="ghost" icon="trash-a">右边弹出</i-button>
+                                </card>
+                            </i-col>
 
-                    </p>
-                    <a href="#" slot="extra"  style="padding-right: 20px">
-                        <Icon type="edit"></Icon>
-                        更新
-                    </a>
-                    <a  href="#" slot="extra" >
-                        <Icon type="ios-trash-outline"></Icon>
-                        删除
-                    </a>
+                            <i-col span="9">
+                                <card dis-hover  style="margin: 10px 5px;    height: 600px;overflow-y: scroll;" >
+                                    <p slot="title">
+                                        <Icon type="ios-list-outline"></Icon>
+                                        弹出的数据
+                                    </p>
+                                    <card dis-hover v-for="item in popListData" style="margin: 32px 0">
+                                        {{ item }}
+                                    </card>
+                                </card>
+                            </i-col>
 
-                </Card>
+
+                        </row>
+                    </card>
+                    </i-col>
+                </row>
             </i-content>
         </layout>
     </div>
+
+    <Modal :title="title" v-model="modalVisible" :mask-closable='false' :width="500" :styles="{top: '30px'}">
+        <i-form ref="form" :model="form" :label-width="70" :rules="formValidate">
+            <form-item label="data" prop="data">
+                <i-input v-model="form.data"/>
+            </form-item>
+        </i-form>
+        <div slot="footer">
+            <i-button type="text" @click="cancel">取消</i-button>
+            <i-button type="primary" :loading="submitLoading" @click="submit">提交</i-button>
+        </div>
+    </Modal>
 </div>
 </body>
 </html>
