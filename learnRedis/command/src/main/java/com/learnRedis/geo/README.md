@@ -1,10 +1,10 @@
 #### GEOADD命令
-将指定的地理空间位置（纬度、经度、名称）添加到指定的key中。
-https://redis.io/commands/geoadd
-GEOADD key longitude latitude member [longitude latitude member ...]
-返回值：添加到sorted set元素的数目，但不包括已更新score的元素。
+将指定的地理空间位置（纬度、经度、名称）添加到指定的key中。  
+https://redis.io/commands/geoadd  
+GEOADD key longitude latitude member [longitude latitude member ...]  
+返回值：添加到sorted set元素的数目，但不包括已更新score的元素。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 GEOADD geoKey 116.4072154982 39.9047253699 BeiJing 121.4737919321 31.2304324029 ShangHai 113.2643446427 23.1290765766 GuangZhou
 ```
@@ -22,14 +22,14 @@ public void geoAdd() {
 }
 ```
 #### GEODIST命令
-返回两个给定位置之间的距离。
-指定单位的参数 unit 必须是以下单位的其中一个：
-m 表示单位为米(默认)。
-km 表示单位为千米。
-mi 表示单位为英里。
-ft 表示单位为英尺。
-GEODIST key member1 member2 [unit]
-返回值：两个给定位置之间的距离
+返回两个给定位置之间的距离。  
+指定单位的参数 unit 必须是以下单位的其中一个：  
+m 表示单位为米(默认)。  
+km 表示单位为千米。  
+mi 表示单位为英里。  
+ft 表示单位为英尺。  
+GEODIST key member1 member2 [unit]  
+返回值：两个给定位置之间的距离  
 
 redis客户端执行的命令如下
 ```
@@ -38,7 +38,7 @@ GEODIST geoKey BeiJing ShangHai
 GEODIST geoKey BeiJing GuangZhou
 GEODIST geoKey ShangHai GuangZhou
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/geo/geodist%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
@@ -54,16 +54,16 @@ public void geoDist() {
 }
 ```
 #### GEOHASH命令
-返回一个或多个位置元素的 Geohash 表示。https://redis.io/commands/geohash
-GEOHASH key member [member ...]
-返回值：一个数组， 数组的每个项都是一个 geohash 。 命令返回的 geohash 的位置与用户给定的位置元素的位置一一对应。
+返回一个或多个位置元素的 Geohash 表示。https://redis.io/commands/geohash  
+GEOHASH key member [member ...]  
+返回值：一个数组， 数组的每个项都是一个 geohash 。 命令返回的 geohash 的位置与用户给定的位置元素的位置一一对应。  
 
 redis客户端执行的命令如下
 ```
 GEOADD geoKey 116.4072154982 39.9047253699 BeiJing 121.4737919321 31.2304324029 ShangHai 113.2643446427 23.1290765766 GuangZhou
 GEOHASH geoKey BeiJing ShangHai GuangZhou
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/geo/geohash%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
@@ -75,16 +75,16 @@ public void geoHash() {
 }
 ```
 #### GEOPOS命令
-所有对应key的成员的位置（经度和纬度）。
-GEOPOS key member [member ...]
-返回值：经度和纬度
+所有对应key的成员的位置（经度和纬度）。  
+GEOPOS key member [member ...]  
+返回值：经度和纬度  
 
 redis客户端执行的命令如下
 ```
 GEOADD geoKey 116.4072154982 39.9047253699 BeiJing 121.4737919321 31.2304324029 ShangHai 113.2643446427 23.1290765766 GuangZhou
 GEOPOS geoKey BeiJing ShangHai GuangZhou
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/geo/geopos%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
@@ -96,32 +96,32 @@ public void geoPos() {
 }
 ```
 #### GEORADIUS命令
-以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素。
-范围可以使用以下其中一个单位：
-     *
-m 表示单位为米。
-km 表示单位为千米。
-mi 表示单位为英里。
-ft 表示单位为英尺。
-在给定以下可选项时， 命令会返回额外的信息：
-     *
-WITHDIST: 在返回位置元素的同时， 将位置元素与中心之间的距离也一并返回。 距离的单位和用户给定的范围单位保持一致。
-WITHCOORD: 将位置元素的经度和维度也一并返回。
-WITHHASH: 以 52 位有符号整数的形式， 返回位置元素经过原始 geohash 编码的有序集合分值。 这个选项主要用于底层应用或者调试， 实际中的作用并不大。
-命令默认返回未排序的位置元素。 通过以下两个参数， 用户可以指定被返回位置元素的排序方式：
-     *
-ASC: 根据中心的位置， 按照从近到远的方式返回位置元素。
-DESC: 根据中心的位置， 按照从远到近的方式返回位置元素。
-可以使用 COUNT <count> 选项去获取前 N 个匹配元素
-https://redis.io/commands/georadius
-GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count]
+以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素。  
+范围可以使用以下其中一个单位：  
+
+m 表示单位为米。  
+km 表示单位为千米。  
+mi 表示单位为英里。  
+ft 表示单位为英尺。  
+在给定以下可选项时， 命令会返回额外的信息：  
+
+WITHDIST: 在返回位置元素的同时， 将位置元素与中心之间的距离也一并返回。 距离的单位和用户给定的范围单位保持一致。  
+WITHCOORD: 将位置元素的经度和维度也一并返回。  
+WITHHASH: 以 52 位有符号整数的形式， 返回位置元素经过原始 geohash 编码的有序集合分值。 这个选项主要用于底层应用或者调试， 实际中的作用并不大。  
+命令默认返回未排序的位置元素。 通过以下两个参数， 用户可以指定被返回位置元素的排序方式：  
+
+ASC: 根据中心的位置， 按照从近到远的方式返回位置元素。  
+DESC: 根据中心的位置， 按照从远到近的方式返回位置元素。  
+可以使用 COUNT <count> 选项去获取前 N 个匹配元素  
+https://redis.io/commands/georadius  
+GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count]  
 
 redis客户端执行的命令如下
 ```
 GEOADD geoKey 116.4072154982 39.9047253699 BeiJing 121.4737919321 31.2304324029 ShangHai 113.2643446427 23.1290765766 GuangZhou
 GEORADIUS geoKey 121.4737919321 31.2304324029 1067672 m
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/geo/georadius%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
@@ -135,16 +135,16 @@ public void geoRadius() {
 }
 ```
 #### GEORADIUSBYMEMBER命令
-这个命令和 GEORADIUS 命令一样， 都可以找出位于指定范围内的元素， 但是 GEORADIUSBYMEMBER 的中心点是由给定的位置元素决定的， 而不是像 GEORADIUS 那样， 使用输入的经度和纬度来决定中心点
-指定成员的位置被用作查询的中心。
-GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count]
+这个命令和 GEORADIUS 命令一样， 都可以找出位于指定范围内的元素， 但是 GEORADIUSBYMEMBER 的中心点是由给定的位置元素决定的， 而不是像 GEORADIUS 那样， 使用输入的经度和纬度来决定中心点  
+指定成员的位置被用作查询的中心。  
+GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count]  
 
 redis客户端执行的命令如下
 ```
 GEOADD geoKey 116.4072154982 39.9047253699 BeiJing 121.4737919321 31.2304324029 ShangHai 113.2643446427 23.1290765766 GuangZhou
 GEORADIUSBYMEMBER geoKey ShangHai 1067672 m
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/geo/georadiusbymember%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
