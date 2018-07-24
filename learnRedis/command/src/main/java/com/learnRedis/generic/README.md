@@ -15,7 +15,7 @@ set key1 "key1"
 set key2 "key2"
 del key1 key2 key3
 ```
-执行结果如下
+执行结果如下  
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/del%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
@@ -44,18 +44,18 @@ public void del() {
 
 ##### DUMP命令
 
-序列化给定 key的value值 ，并返回被序列化的值
+序列化给定 key的value值 ，并返回被序列化的值  
+ 
+DUMP key  
+返回值：如果 key 不存在，那么返回 nil 。 否则，返回序列化之后的值。  
 
-DUMP key
-返回值：如果 key 不存在，那么返回 nil 。 否则，返回序列化之后的值。
-
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set dump dumpdump
 dump dump
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/dump%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -75,10 +75,10 @@ public void dump() {
 
 ##### EXISTS命令
 
-检查key 是否存在
+检查key 是否存在  
 
-EXISTS key [key ...]
-返回值：若 key 存在返回 1 ，否则返回 0 。
+EXISTS key [key ...]  
+返回值：若 key 存在返回 1 ，否则返回 0 。  
 
 redis客户端执行的命令如下
 ```
@@ -87,7 +87,7 @@ exists exists
 exists noExists
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/exists%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -123,7 +123,7 @@ expire expire 10
 ttl expire
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/expire%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -159,7 +159,7 @@ set expireAt expireAt
 expireAt expire 1531187220
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/expireAt%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -193,7 +193,7 @@ redis客户端执行的命令如下
 keys *
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/keys%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -212,24 +212,24 @@ public void keys() {
 
 ##### MIGRATE命令
 
-将key移动到目标redis服务器上，原来redis服务器上的key会丢失
+将key移动到目标redis服务器上，原来redis服务器上的key会丢失  
 
 （如果目标服务器上有这个key，会出现错误(error) ERR Target instance replied with error: BUSYKEY Target key name already exists.）
+  
+MIGRATE host port key|"" destination-db timeout [COPY][REPLACE] [KEYS key [key ...]]  
+操作：  
+COPY 原来的key不会丢失  
+REPLACE 替换远程的数据，原来的key会丢失  
+KEYS 我试了没效果，望指点。官网原话：If the key argument is an empty string, the command will instead migrate all the keys that follow the KEYS option (see the above section for more info)  
+返回值：成功返回OK, key不存在返回NOKEY  
 
-MIGRATE host port key|"" destination-db timeout [COPY][REPLACE] [KEYS key [key ...]]
-操作：
-COPY 原来的key不会丢失
-REPLACE 替换远程的数据，原来的key会丢失
-KEYS 我试了没效果，望指点。官网原话：If the key argument is an empty string, the command will instead migrate all the keys that follow the KEYS option (see the above section for more info)
-返回值：成功返回OK, key不存在返回NOKEY
-
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set migrate migrate
 migrate 192.168.17.101 6379 "" 0 5000 keys migrate
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/migrate%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -268,12 +268,12 @@ public void migrate() {
 
 ##### MOVE命令
 
-将当前数据库的 key 移动到给定的数据库 db 当中
+将当前数据库的 key 移动到给定的数据库 db 当中  
 
-MOVE key db
-返回值：移动成功返回 1 ，失败则返回 0 。
+MOVE key db  
+返回值：移动成功返回 1 ，失败则返回 0 。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 select 0
 set move move
@@ -283,7 +283,7 @@ select 1
 get move
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/move%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -309,17 +309,17 @@ public void move() {
 
 ##### OBJECT命令
 
-用来调试或者用于了解key存储的编码方式
+用来调试或者用于了解key存储的编码方式  
 
-OBJECT subcommand [arguments [arguments ...]]
-subcommand:
-REFCOUNT 引用次数
-ENCODING 编码格式
-IDLETIME 空闲时间
-FREQ     访问频率
-返回值：不同的subcommand返回不同的值
+OBJECT subcommand [arguments [arguments ...]]  
+subcommand:  
+REFCOUNT 引用次数  
+ENCODING 编码格式  
+IDLETIME 空闲时间  
+FREQ     访问频率  
+返回值：不同的subcommand返回不同的值  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set object object
 object encoding object
@@ -327,7 +327,7 @@ object idletime object
 object refcount object
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/object%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -348,12 +348,12 @@ public void object() {
 
 ##### PERSIST命令
 
-移除key的生存时间，将这个 key 从volatile(设置了生存时间的key )转换成persistent (一个没有过期时间的 key )。
+移除key的生存时间，将这个 key 从volatile(设置了生存时间的key )转换成persistent (一个没有过期时间的 key )。  
 
-PERSIST key
-返回值：过期时间被移除返回1，如果key不存在或者已超时则返回0
+PERSIST key  
+返回值：过期时间被移除返回1，如果key不存在或者已超时则返回0  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set persist persist
 expire persist 10
@@ -361,10 +361,10 @@ ttl persist
 persist persist
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/persist%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
-下面是java代码
+下面是java代码  
 ```java
 @Test
 public void persist() {
@@ -385,19 +385,19 @@ public void persist() {
 
 ##### PEXPIRE命令
 
-这个命令和EXPIRE类似，不同的是EXPIRE是以秒为单位，PEXPIRE是以毫秒为单位
+这个命令和EXPIRE类似，不同的是EXPIRE是以秒为单位，PEXPIRE是以毫秒为单位  
 
-PEXPIRE key milliseconds
-返回值：设置成功返回 1 。当 key 不存在或者不能为 key 设置过期时间时(比如在低于 2.1.3 版本的 Redis 中你尝试更新 key 的过期时间)返回 0 。
+PEXPIRE key milliseconds  
+返回值：设置成功返回 1 。当 key 不存在或者不能为 key 设置过期时间时(比如在低于 2.1.3 版本的 Redis 中你尝试更新 key 的过期时间)返回 0 。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set pexpire pexpire
 pexpire pexpire 10000
 ttl pexpire
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/pexpire%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -416,12 +416,12 @@ public void pexpire() throws InterruptedException {
 
 ##### PEXPIREAT命令
 
- 以 UNIX 时间戳(unix milliseconds)格式设置 key 的过期时间
+ 以 UNIX 时间戳(unix milliseconds)格式设置 key 的过期时间  
 
-PEXPIREAT key milliseconds-timestamp
-返回值：设置成功返回 1 。当 key 不存在或者不能为 key 设置过期时间时(比如在低于 2.1.3 版本的 Redis 中你尝试更新 key 的过期时间)返回 0 。
+PEXPIREAT key milliseconds-timestamp  
+返回值：设置成功返回 1 。当 key 不存在或者不能为 key 设置过期时间时(比如在低于 2.1.3 版本的 Redis 中你尝试更新 key 的过期时间)返回 0 。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set pexpireAt pexpireAt
 pexpireAt pexpireAt 1531187220000
@@ -446,12 +446,12 @@ public void pexpireAt() throws InterruptedException {
 
 ##### PTTL命令
 
-类似于 TTL 命令，但它以毫秒为单位返回 key 的剩余生存时间
+类似于 TTL 命令，但它以毫秒为单位返回 key 的剩余生存时间  
 
-PTTL key
-返回值：当 key 不存在时，返回 -2 。当 key 存在但没有设置剩余生存时间时，返回 -1 。否则，以毫秒为单位，返回 key 的剩余生存时间。
+PTTL key  
+返回值：当 key 不存在时，返回 -2 。当 key 存在但没有设置剩余生存时间时，返回 -1 。否则，以毫秒为单位，返回 key 的剩余生存时间。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set pttl pttl
 pexpireAt pttl 1531187220000
@@ -471,12 +471,12 @@ public void pttl() {
 
 ##### RANDOMKEY命令
 
-返回当前选择数据库的随机key
+返回当前选择数据库的随机key  
 
-RANDOMKEY
-返回值：如果数据库没有任何key，返回nil，否则返回一个随机的key
+RANDOMKEY  
+返回值：如果数据库没有任何key，返回nil，否则返回一个随机的key  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set randomkey randomkey
 set randomkey1 randomkey1
@@ -484,7 +484,7 @@ set randomkey2 randomkey2
 randomkey
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/randomkey%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -502,17 +502,17 @@ public void randomKey() {
 
 ##### RENAME命令
 
-将key重命名为newkey，如果key不存在，将返回一个错误。如果newkey已经存在，则值将被覆盖。
+将key重命名为newkey，如果key不存在，将返回一个错误。如果newkey已经存在，则值将被覆盖。  
 
-RENAME key newkey
+RENAME key newkey  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set rename rename
 * rename rename newRename
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/rename%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -531,9 +531,9 @@ public void rename() {
 
 ##### RENAMENX命令
 
-当newkey不存在时，将key重命名为newkey。如果key不存在，将返回一个错误。
-RENAMENX key newkey
-返回值：修改成功时，返回 1 。如果 newkey 已经存在，返回 0 。
+当newkey不存在时，将key重命名为newkey。如果key不存在，将返回一个错误。  
+RENAMENX key newkey  
+返回值：修改成功时，返回 1 。如果 newkey 已经存在，返回 0 。  
 
 redis客户端执行的命令如下
 ```
@@ -542,7 +542,7 @@ set renameNx2 renameNx2
 renamenx renameNx1 renameNx2
 renamenx renameNx1 renameNx3
 ```
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/renamenx%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -567,13 +567,13 @@ public void renameNx() {
 
 ##### RESTORE命令
 
-反序列化给定的序列化值，并将它和给定的 key 关联。
-参数 ttl 以毫秒为单位为 key 设置生存时间；如果 ttl 为 0 ，那么不设置生存时间。
-当key已存在时，会返回(error) BUSYKEY Target key name already exists.
-RESTORE会检查RDB版本和数据校验，如果不匹配择返回错误。
-RESTORE key ttl serialized-value [REPLACE]
+反序列化给定的序列化值，并将它和给定的 key 关联。  
+参数 ttl 以毫秒为单位为 key 设置生存时间；如果 ttl 为 0 ，那么不设置生存时间。  
+当key已存在时，会返回(error) BUSYKEY Target key name already exists.  
+RESTORE会检查RDB版本和数据校验，如果不匹配择返回错误。  
+RESTORE key ttl serialized-value [REPLACE]  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set restore restore
 dump restore
@@ -585,7 +585,7 @@ get newRestore
 restore newRestore 0 "\x00\arestore\a\x00\\f*3\xc1Bo\x83"
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/restore%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -616,9 +616,9 @@ public void restore() throws InterruptedException {
 
 ##### SCAN命令
 
-用于迭代当前数据库中的key集合。命令说明：https://redis.io/commands/scan
+用于迭代当前数据库中的key集合。命令说明：https://redis.io/commands/scan  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set 1 1
 set 2 2
@@ -627,7 +627,7 @@ scan 0
 scan 17
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/scan%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -661,9 +661,9 @@ public void scan() {
 
 ##### SORT命令
 
-返回或存储key的list、 set 或sorted set 中的元素。默认是按照数值类型排序的，并且按照两个元素的双精度浮点数类型值进行比较。
-SORT key [BY pattern][LIMIT offset count] [GET pattern [GET pattern ...]][ASC|DESC] [ALPHA][STORE destination]
-返回值：返回或存储key的list、 set 或sorted set 中的元素。
+返回或存储key的list、 set 或sorted set 中的元素。默认是按照数值类型排序的，并且按照两个元素的双精度浮点数类型值进行比较。  
+SORT key [BY pattern][LIMIT offset count] [GET pattern [GET pattern ...]][ASC|DESC] [ALPHA][STORE destination]  
+返回值：返回或存储key的list、 set 或sorted set 中的元素。  
 
 
 redis客户端执行的命令如下
@@ -697,14 +697,14 @@ sort userId BY userInfo:*->integral GET userInfo:*->name
 sort userId BY userInfo:*->integral GET userInfo:*->name store destResult
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/sort%E5%91%BD%E4%BB%A4%E4%B8%80%E8%88%AC%E7%94%A8%E6%B3%95%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/sort%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8key%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/sort%E5%91%BD%E4%BB%A4%E4%BF%9D%E5%AD%98%E6%8E%92%E5%BA%8F%E7%BB%93%E6%9E%9C%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/sort%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0ALPHA%E5%92%8CLIMIT%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/sort%E5%91%BD%E4%BB%A4%E5%B0%86%E5%93%88%E5%B8%8C%E8%A1%A8%E4%BD%9C%E4%B8%BAGET%E6%88%96BY%E7%9A%84%E5%8F%82%E6%95%B0%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
-下面是java代码
+下面是java代码  
 ```java
 @Test
 public void sort() {
@@ -801,29 +801,29 @@ public void sort() {
 
 ##### TOUCH命令
 
-修改key的最后访问时间，不存在则忽略
-TOUCH key [key ...]
-返回值：修改key的个数
+修改key的最后访问时间，不存在则忽略  
+TOUCH key [key ...]  
+返回值：修改key的个数  
 
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set touch touch
 touch touch
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/touch%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 
 
 ##### TTL命令
 
-返回 key 的剩余生存时间
-TTL key
-返回值：当 key 不存在时，返回 -2 。当 key 存在但没有设置剩余生存时间时，返回 -1 。否则，以毫秒为单位，返回 key 的剩余生存时间。
+返回 key 的剩余生存时间  
+TTL key  
+返回值：当 key 不存在时，返回 -2 。当 key 存在但没有设置剩余生存时间时，返回 -1 。否则，以毫秒为单位，返回 key 的剩余生存时间。  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set ttl ttl
 expire ttl 10
@@ -845,11 +845,11 @@ public void ttl() {
 
 ##### TYPE命令
 
-返回key所存储的value的数据结构类型
-TYPE key
-返回值：返回当前key的数据类型，如果key不存在时返回none
+返回key所存储的value的数据结构类型  
+TYPE key  
+返回值：返回当前key的数据类型，如果key不存在时返回none  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set stringType stringValue
 lpush listType listValue
@@ -860,7 +860,7 @@ type listType
 type setType
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/type%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 下面是java代码
@@ -882,25 +882,25 @@ public void type() {
 
 ##### UNLINK命令
 
-和DEL命令相似，唯一的不同就是UNLINK命令不是阻塞的(4.0.0.后新增)
-UNLINK key [key ...]
-返回值：返回删除的数量
+和DEL命令相似，唯一的不同就是UNLINK命令不是阻塞的(4.0.0.后新增)  
+UNLINK key [key ...]  
+返回值：返回删除的数量  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set unlink unlink
 unlink unlink
 ```
 
-执行结果如下
+执行结果如下  
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/generic/unlink%E5%91%BD%E4%BB%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C.png?raw=true)
 
 ##### WAIT命令
 
-阻塞当前客户端。命令说明：https://redis.io/commands/wait
-WAIT numslaves timeout
+阻塞当前客户端。命令说明：https://redis.io/commands/wait  
+WAIT numslaves timeout  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 set wait wait
 wait 1 0
@@ -908,8 +908,8 @@ wait 2 1000
 ```
 
 
-下面是java代码
-```java
+下面是java代码  
+```java 
 @Test
 public void waitCommand() throws InterruptedException {
     jedis.set("wait", "wait");
