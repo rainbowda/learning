@@ -43,7 +43,6 @@ new Vue({
 
             axios.get('/zset/rank/'+type+"/"+member)
                 .then(res=>{
-                    console.log(res);
                     this.$Message.success(member+'的排名:'+res.data);
                     this.init();
                 })
