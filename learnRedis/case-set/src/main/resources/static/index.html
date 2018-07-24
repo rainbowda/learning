@@ -13,36 +13,85 @@
             <i-header>
                 <i-menu mode="horizontal" theme="dark" active-name="1" >
                     <div class="layout-nav">
-                        <menu-item name="addMyLog" >
-                            <icon type="ios-navigate"></icon>
-                            新增
-                        </menu-item>
-                        <menu-item name="delMyLog">
-                            <icon type="ios-keypad"></icon>
-                            删除
-                        </menu-item>
                     </div>
                 </i-menu>
             </i-header>
             <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover  style="margin: 32px 0">
-                    <p slot="title">
-                        <Icon type="clock"></Icon>
+                <row>
+                    <i-col>
+                        <card>
+                            <row style="margin-bottom: 2px">
+                                <i-col span="9">
+                                    <card dis-hover  style="margin: 10px 5px;    height: 300px;overflow-y: scroll;" >
+                                        <p slot="title">
+                                            <Icon type="ios-list-outline"></Icon>
+                                            A的好友
+                                        </p>
+                                        <tag v-for="item in aFriendData" closable @on-close="delFriend('A',item)">{{ item}}</tag>
+                                    </card>
+                                </i-col>
+                                <i-col span="6">
+                                    <card dis-hover  style="margin: 10px 5px">
+                                        <p slot="title">
+                                            <Icon type="ios-list-outline"></Icon>
+                                            操作
+                                        </p>
+                                        <i-button @click="addFriend" type="ghost" icon="plus-circled">添加好友</i-button>
+                                    </card>
+                                    <card dis-hover  style="margin: 10px 5px">
+                                        <p slot="title">
+                                            <Icon type="ios-list-outline"></Icon>
+                                            操作
+                                        </p>
+                                        <i-button @click="intersectFriend" type="ghost" icon="plus-circled">共同好友</i-button>
+                                        <i-button @click="differenceFriend" type="ghost" icon="plus-circled">A独有的好友</i-button>
+                                        <i-button @click="unionFriend" type="ghost" icon="plus-circled">所有的好友</i-button>
+                                    </card>
+                                </i-col>
+                                <i-col span="9">
+                                    <card dis-hover  style="margin: 10px 5px;    height: 300px;overflow-y: scroll;" >
+                                        <p slot="title">
+                                            <Icon type="ios-list-outline"></Icon>
+                                            B的好友
+                                        </p>
+                                        <tag v-for="item in bFriendData" closable @on-close="delFriend('B',item)">{{ item}}</tag>
+                                    </card>
+                                </i-col>
 
-                    </p>
-                    <a href="#" slot="extra"  style="padding-right: 20px">
-                        <Icon type="edit"></Icon>
-                        更新
-                    </a>
-                    <a  href="#" slot="extra" >
-                        <Icon type="ios-trash-outline"></Icon>
-                        删除
-                    </a>
+                                <i-col span="24">
+                                    <card dis-hover  style="margin: 10px 5px;  overflow-y: scroll;" >
+                                        <p slot="title">
+                                            <Icon type="ios-list-outline"></Icon>
+                                            {{ resultFrientTitle }}
+                                        </p>
+                                        <tag v-for="item in resultFrient" >{{ item}}</tag>
+                                    </card>
+                                </i-col>
 
-                </Card>
+                            </row>
+                        </card>
+                    </i-col>
+                </row>
             </i-content>
         </layout>
     </div>
+    <Modal title="添加好友" v-model="modalVisible" :mask-closable='false' :width="400" :styles="{top: '30px'}">
+        <i-form ref="form" :model="form" :label-width="70" :rules="formValidate">
+            <form-item label="用户" prop="user">
+                <i-select v-model="form.user" >
+                    <i-option value="A" >A</i-option>
+                    <i-option value="B" >B</i-option>
+                </i-select>
+            </form-item>
+            <form-item label="好友" prop="friend" >
+                <i-input v-model="form.friend"/>
+            </form-item>
+        </i-form>
+        <div slot="footer">
+            <i-button type="text" @click="cancel">取消</i-button>
+            <i-button type="primary" :loading="submitLoading" @click="submit">提交</i-button>
+        </div>
+    </Modal>
 </div>
 </body>
 </html>
