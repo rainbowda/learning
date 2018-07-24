@@ -277,9 +277,9 @@ public void sCard() {
 }
 ```
 #### SISMEMBER命令
-返回成员 member 是否是存储的集合 key的成员.
-SISMEMBER key member
-返回值：如果member元素是集合key的成员，则返回1。如果member元素不是key的成员，或者集合key不存在，则返回0
+返回成员 member 是否是存储的集合 key的成员.  
+SISMEMBER key member  
+返回值：如果member元素是集合key的成员，则返回1。如果member元素不是key的成员，或者集合key不存在，则返回0  
 
 redis客户端执行的命令如下
 ```
@@ -301,15 +301,15 @@ public void sIsMember() {
 }
 ```
 #### SMOVE命令
-将member从source集合移动到destination集合中. 对于其他的客户端,在特定的时间元素将会作为source或者destination集合的成员出现.
-如果source 集合不存在或者不包含指定的元素,这smove命令不执行任何操作并且返回0.
-否则对象将会从source集合中移除，并添加到destination集合中去，
-如果destination集合已经存在该元素，则smove命令仅将该元素充source集合中移除.
-如果source 和destination不是集合类型,则返回错误.
-SMOVE source destination member
-返回值：如果该元素成功移除,返回1。如果该元素不是 source集合成员,无任何操作,则返回0.
+将member从source集合移动到destination集合中. 对于其他的客户端,在特定的时间元素将会作为source或者destination集合的成员出现.  
+如果source 集合不存在或者不包含指定的元素,这smove命令不执行任何操作并且返回0.  
+否则对象将会从source集合中移除，并添加到destination集合中去，  
+如果destination集合已经存在该元素，则smove命令仅将该元素充source集合中移除.  
+如果source 和destination不是集合类型,则返回错误.  
+SMOVE source destination member  
+返回值：如果该元素成功移除,返回1。如果该元素不是 source集合成员,无任何操作,则返回0.  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 sadd sMoveKeySrc 0 1 2 3 4
 smove sMoveKeySrc sMoveKeyDst 5
@@ -335,11 +335,11 @@ public void sMove() {
 }
 ```
 #### SPOP命令
-移除且返回一个或多个随机元素
-SPOP key [count]
-返回值：移除的元素，当key不存在时返回nil
+移除且返回一个或多个随机元素  
+SPOP key [count]  
+返回值：移除的元素，当key不存在时返回nil  
 
-redis客户端执行的命令如下
+redis客户端执行的命令如下  
 ```
 sadd sPopKey 0 1 2 3 4
 spop sPopKey
@@ -365,10 +365,19 @@ public void sPop() {
 
 }
 ```
-SRANDMEMBER key [count]
-返回值：不使用count 参数的情况下该命令返回随机的元素,如果key不存在则返回nil.使用count参数,则返回一个随机的元素数组,如果key不存在则返回一个空的数组.
+#### SRANDMEMBER命令
+仅提供key参数,那么随机返回key集合中的一个元素.  
+Redis 2.6开始, 可以接受 count 参数,  
+如果count是整数且小于元素的个数，返回含有 count 个不同的元素的数组,  
+如果count是个整数且大于集合中元素的个数时,仅返回整个集合的所有元素,  
+当count是负数,则会返回一个包含count的绝对值的个数元素的数组，  
+如果count的绝对值大于元素的个数,则返回的结果集里会出现一个元素出现多次的情况.  
+仅提供key参数时,该命令作用类似于SPOP命令, 不同的是SPOP命令会将被选择的随机元素从集合中移除, 而SRANDMEMBER仅仅是返回该随记元素,而不做任何操作.  
 
-redis客户端执行的命令如下
+SRANDMEMBER key [count]  
+返回值：不使用count 参数的情况下该命令返回随机的元素,如果key不存在则返回nil.使用count参数,则返回一个随机的元素数组,如果key不存在则返回一个空的数组.    
+
+redis客户端执行的命令如下    
 ```
 sadd sRandMemberKey 0 1 2 3 4
 srandmember sRandMemberKey 2
