@@ -13,33 +13,50 @@
             <i-header>
                 <i-menu mode="horizontal" theme="dark" active-name="1" >
                     <div class="layout-nav">
-                        <menu-item name="addMyLog" >
-                            <icon type="ios-navigate"></icon>
-                            新增
-                        </menu-item>
-                        <menu-item name="delMyLog">
-                            <icon type="ios-keypad"></icon>
-                            删除
-                        </menu-item>
                     </div>
                 </i-menu>
             </i-header>
             <i-content :style="{padding: '0 50px'}">
-                <Card dis-hover  style="margin: 32px 0">
-                    <p slot="title">
-                        <Icon type="clock"></Icon>
+                <row>
+                    <i-col>
+                        <card>
+                            <row>
 
-                    </p>
-                    <a href="#" slot="extra"  style="padding-right: 20px">
-                        <Icon type="edit"></Icon>
-                        更新
-                    </a>
-                    <a  href="#" slot="extra" >
-                        <Icon type="ios-trash-outline"></Icon>
-                        删除
-                    </a>
+                                <i-col span="24">
+                                    <i-button @click="changeSortType" type="ghost" icon="plus-circled">{{ sortName }}</i-button>
+                                </i-col>
 
-                </Card>
+                            </row>
+                            <row>
+                                <i-col span="24">
+                                    <Card dis-hover v-for="item in listData" style="margin: 5px 0">
+                                        <p slot="title">
+                                            <Icon type="clock"></Icon>
+                                            {{ item.score }}
+                                        </p>
+                                        <a href="#" slot="extra" @click="rank('ASC',item.value)" style="padding-right: 20px">
+                                            <Icon type="navicon-round"></Icon>
+                                            升序排名
+                                        </a>
+                                        <a href="#" slot="extra" @click="rank('DESC',item.value)" style="padding-right: 20px">
+                                            <Icon type="navicon-round"></Icon>
+                                            降序排名
+                                        </a>
+                                        <a href="#" slot="extra" @click="star('UP',item.value)" style="padding-right: 20px">
+                                            <Icon type="thumbsup"></Icon>
+                                            赞
+                                        </a>
+                                        <a  href="#" slot="extra" @click="star('DOWN',item.value)">
+                                            <Icon type="thumbsdown"></Icon>
+                                            踩
+                                        </a>
+                                        {{ item.value }}
+                                    </Card>
+                                </i-col>
+                            </row>
+                        </card>
+                    </i-col>
+                </row>
             </i-content>
         </layout>
     </div>
