@@ -6,7 +6,7 @@
 
 ### 案例
 
-demo功能是记录日志，整个demo的大致页面如下。左边是存储到Redis中的数据，右边是从Redis中弹出的数据。
+demo功能是队列，整个demo的大致页面如下。左边是存储到Redis中的数据，右边是从Redis中弹出的数据。
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-list/%E9%A1%B5%E9%9D%A2.png?raw=true)
 

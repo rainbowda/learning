@@ -6,7 +6,7 @@
 
 ### 案例
 
-demo功能是记录日志，整个demo的大致页面如下
+demo功能是通讯录，整个demo的大致页面如下
 
 ![](https://github.com/rainbowda/learnWay/blob/master/learnRedis/img/case-hash/%E9%A1%B5%E9%9D%A2.png?raw=true)
 
