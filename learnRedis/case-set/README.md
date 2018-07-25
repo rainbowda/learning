@@ -2,7 +2,7 @@
 
 这一篇文章将讲述Redis中的set类型命令，同样也是通过demo来讲述，其他部分这里就不在赘述了。
 
-项目Github地址：[https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-list](https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-set)
+项目Github地址：[https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-set](https://github.com/rainbowda/learnWay/tree/master/learnRedis/case-set)
 ### 案例
 
 demo功能是共同好友，整个demo的大致页面如下。左边是存储到Redis中的数据，右边是从Redis中弹出的数据。
