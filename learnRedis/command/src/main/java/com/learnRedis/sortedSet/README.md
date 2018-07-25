@@ -73,7 +73,7 @@ ZRANGE key start stop [WITHSCORES]
 ZREVRANGE key start stop [WITHSCORES]  
 
 #### ZRANGEBYLEX命令
-返回指定成员区间内的成员，按成员字典正序排序, 分数必须相同。http://www.redis.cn/commands/zrangebylex.html  
+返回指定成员区间内的成员，按成员字典正序排序。https://redis.io/commands/zrangebylex  
 ZRANGEBYLEX key min max [LIMIT offset count]  
 返回值：指定成员范围的元素列表。  
 
