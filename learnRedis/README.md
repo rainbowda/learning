@@ -1,3 +1,16 @@
+### 项目模块
+- case-hash：hash数据结构案例
+- case-list：list数据结构案例
+- case-set：set数据结构案例
+- case-sortedset：sortedset数据结构案例
+- case-string：string数据结构案例
+- cluster：集群介绍
+- command：存放各种命令代码的测试
+- img：存放图片
+- persistence：持久化介绍
+- replication：主从复制介绍
+- sentinel：哨兵介绍
+
 ### redis系列
 
 1. [redis介绍与安装](https://github.com/rainbowda/learnWay/blob/master/learnRedis/command/src/main/java/README.md)
