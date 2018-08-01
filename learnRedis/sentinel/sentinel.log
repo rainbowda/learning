@@ -1,0 +1,37 @@
+2100:X 31 Jul 19:06:19.888 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+2100:X 31 Jul 19:06:19.889 # Redis version=4.9.103, bits=64, commit=00000000, modified=0, pid=2100, just started
+2100:X 31 Jul 19:06:19.889 # Configuration loaded
+2101:X 31 Jul 19:06:19.933 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+2101:X 31 Jul 19:06:19.935 * Running mode=sentinel, port=26379.
+2101:X 31 Jul 19:06:19.935 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+2101:X 31 Jul 19:06:19.936 # Sentinel ID is b457cbbcda1991f540d56c6e8faea123a668b16c
+2101:X 31 Jul 19:06:19.936 # +monitor master learnSentinelMaster 192.168.17.101 6379 quorum 2
+2101:X 31 Jul 19:06:19.938 * +slave slave 192.168.17.102:6379 192.168.17.102 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:06:19.939 * +slave slave 192.168.17.103:6379 192.168.17.103 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:06:20.029 * +sentinel sentinel f0230d4fdf1ffc7865852de71f16b3017cc1617c 192.168.17.101 26379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:06:20.258 * +sentinel sentinel 5b1099513713310eba94e69513dba76cf0ac2222 192.168.17.102 26379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.539 # +sdown master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.606 # +odown master learnSentinelMaster 192.168.17.101 6379 #quorum 2/2
+2101:X 31 Jul 19:13:35.606 # +new-epoch 2
+2101:X 31 Jul 19:13:35.606 # +try-failover master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.607 # +vote-for-leader b457cbbcda1991f540d56c6e8faea123a668b16c 2
+2101:X 31 Jul 19:13:35.610 # 5b1099513713310eba94e69513dba76cf0ac2222 voted for b457cbbcda1991f540d56c6e8faea123a668b16c 2
+2101:X 31 Jul 19:13:35.610 # f0230d4fdf1ffc7865852de71f16b3017cc1617c voted for b457cbbcda1991f540d56c6e8faea123a668b16c 2
+2101:X 31 Jul 19:13:35.708 # +elected-leader master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.709 # +failover-state-select-slave master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.793 # +selected-slave slave 192.168.17.102:6379 192.168.17.102 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.793 * +failover-state-send-slaveof-noone slave 192.168.17.102:6379 192.168.17.102 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:35.859 * +failover-state-wait-promotion slave 192.168.17.102:6379 192.168.17.102 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:36.699 # +promoted-slave slave 192.168.17.102:6379 192.168.17.102 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:36.699 # +failover-state-reconf-slaves master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:36.749 * +slave-reconf-sent slave 192.168.17.103:6379 192.168.17.103 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:37.726 * +slave-reconf-inprog slave 192.168.17.103:6379 192.168.17.103 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:37.726 * +slave-reconf-done slave 192.168.17.103:6379 192.168.17.103 6379 @ learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:37.780 # -odown master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:37.781 # +failover-end master learnSentinelMaster 192.168.17.101 6379
+2101:X 31 Jul 19:13:37.781 # +switch-master learnSentinelMaster 192.168.17.101 6379 192.168.17.102 6379
+2101:X 31 Jul 19:13:37.782 * +slave slave 192.168.17.103:6379 192.168.17.103 6379 @ learnSentinelMaster 192.168.17.102 6379
+2101:X 31 Jul 19:13:37.782 * +slave slave 192.168.17.101:6379 192.168.17.101 6379 @ learnSentinelMaster 192.168.17.102 6379
+2101:X 31 Jul 19:13:42.849 # +sdown slave 192.168.17.101:6379 192.168.17.101 6379 @ learnSentinelMaster 192.168.17.102 6379
+2101:X 31 Jul 19:14:00.387 # -sdown slave 192.168.17.101:6379 192.168.17.101 6379 @ learnSentinelMaster 192.168.17.102 6379
+2101:X 31 Jul 19:14:10.389 * +convert-to-slave slave 192.168.17.101:6379 192.168.17.101 6379 @ learnSentinelMaster 192.168.17.102 6379
