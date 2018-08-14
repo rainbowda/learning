@@ -1,3 +1,7 @@
+### 分布式锁
+
+展示了实现分布式锁过程中会出现的问题，以及解决思路。项目中实现的分布式锁代码不适用于生产环境。
+
 ### 文件结构
 ```
 com
@@ -23,7 +27,7 @@ com
         \---case5
                 LockCase5.java # 分布式锁第5个版本。
 ```
-### 锁
+### 锁版本
 
 1. [分布式锁第1个版本](https://github.com/rainbowda/learnWay/blob/master/learnRedis/distributed-locks/src/main/java/com/learnRedis/lock/case1/LockCase1.java)：最原始版本
 2. [分布式锁第2个版本](https://github.com/rainbowda/learnWay/blob/master/learnRedis/distributed-locks/src/main/java/com/learnRedis/lock/case2/LockCase2.java)：解决第1个版本死锁的问题-设置锁的过期时间
