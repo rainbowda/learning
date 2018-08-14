@@ -39,14 +39,18 @@ public class LockTest {
         //添加10个线程获取锁
         for (int i = 0; i < 10; i++) {
             pool.submit(() -> {
-                Jedis jedis = new Jedis("localhost");
-                LockCase5 lock = new LockCase5(jedis, lockName);
-                lock.lock();
+                try {
+                    Jedis jedis = new Jedis("localhost");
+                    LockCase5 lock = new LockCase5(jedis, lockName);
+                    lock.lock();
 
-                //模拟业务执行15秒
-                lock.sleepBySencond(15);
+                    //模拟业务执行15秒
+                    lock.sleepBySencond(15);
 
-                lock.unlock();
+                    lock.unlock();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             });
         }
 
