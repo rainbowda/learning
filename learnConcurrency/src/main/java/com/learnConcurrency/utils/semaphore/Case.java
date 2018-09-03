@@ -11,13 +11,14 @@ public class Case {
         //Semaphore semaphore = new Semaphore(5,true);
 
         ExecutorService service = Executors.newCachedThreadPool();
-
+        //模拟100个玩家排队
         for (int i = 0; i < 100; i++) {
             service.submit(new Player("玩家"+i,semaphore));
         }
-
+        //关闭线程池
         service.shutdown();
 
+        //判断线程池是否中断，没有则循环查看当前排队总人数
         while (!service.isTerminated()){
             System.out.println("当前排队总人数:"+semaphore.getQueueLength());
             try {
