@@ -12,7 +12,7 @@ public class Case {
 
     public static void main(String[] args) {
 
-        service.submit(new ExchangerRunnable("1", exchanger, 2));
+        service.submit(new ExchangerRunnable("1", exchanger, "A"));
         service.submit(new ExchangerRunnable("2", exchanger, "B"));
 
         service.shutdown();
