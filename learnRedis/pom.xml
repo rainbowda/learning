@@ -11,9 +11,6 @@
 
     <artifactId>learnRedis</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>command</module>
-    </modules>
 
 
 </project>
