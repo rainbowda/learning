@@ -13,7 +13,7 @@ public class Fanout extends BaseTest {
     private static final String EXCHANGE_NAME = "logs";
 
     @Test
-    public void emitLog() throws IOException {
+    public void publish() throws IOException {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
 
         String message = "info: Hello World!";
@@ -23,7 +23,7 @@ public class Fanout extends BaseTest {
     }
 
     @Test
-    public void receiveLogs() throws IOException {
+    public void subscribe() throws IOException {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
 
         //让服务器为我们选择一个随机的队列名

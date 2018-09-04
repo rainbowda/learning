@@ -10,7 +10,7 @@ public class Topics extends BaseTest {
     private static final String EXCHANGE_NAME = "topic_logs";
 
     @Test
-    public void emitLogTopic() throws IOException {
+    public void send() throws IOException {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
         /**
@@ -30,7 +30,7 @@ public class Topics extends BaseTest {
     }
 
     @Test
-    public void receiveLogsTopic() throws IOException {
+    public void receive() throws IOException {
         String[] argv = new String[2];
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);

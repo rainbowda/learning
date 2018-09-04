@@ -13,7 +13,7 @@ public class Direct extends BaseTest {
     private static final String EXCHANGE_NAME = "direct_logs";
 
     @Test
-    public void emitLogDirect() throws IOException {
+    public void send() throws IOException {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
         //String routingKey = "info";
         //String routingKey = "warning";
@@ -27,7 +27,7 @@ public class Direct extends BaseTest {
     }
 
     @Test
-    public void receiveLogsDirect() throws IOException {
+    public void receive() throws IOException {
         //String[] argv = new String[]{"info"};
         //String[] argv = new String[]{"error"};
         //String[] argv = new String[]{"warning"};

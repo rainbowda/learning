@@ -13,9 +13,8 @@ public class Headers extends BaseTest {
 
     @Test
     public void emitLogHeader() throws IOException {
-        String[] argv = new String[2];
 
-        String message = argv[0];
+        String message = "message";
 
         String routingKey = "ourTestRoutingKey";
 
