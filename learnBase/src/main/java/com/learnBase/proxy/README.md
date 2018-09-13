@@ -51,4 +51,16 @@ static Object    newProxyInstance(ClassLoader loader,  //指定当前目标对�
 
 SpringAOP会优先选择JDK动态代理，当调用方法不是接口方法时，就只能选择Cglib了
 
-https://www.zhihu.com/question/34301445
+一、为什么不直接都使用JDK动态代理：
+JDK动态代理只能代理接口类，所以很多人设计架构的时候会使用
+XxxService, XxxServiceImpl的形式设计，一是让接口和实现分离，二是也有助于代理。
+
+ 二、为什么不都使用Cgilb代理： 因为JDK动态代理不依赖其他包，Cglib需要导入ASM包，对于简单的有接口的代理使用JDK动态代理可以少导入一个包。 cglib无法代理final方法。 
+
+  
+
+ 
+
+ 
+
+ 
