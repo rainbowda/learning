@@ -12,7 +12,7 @@ public class Test {
 
             FileChannel channel = file.getChannel();
 
-            //容量为48
+            //容量
             ByteBuffer header = ByteBuffer.allocate(4);
             ByteBuffer body = ByteBuffer.allocate(16);
             ByteBuffer[] bufferArray = { header, body };
