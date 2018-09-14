@@ -10,10 +10,9 @@ public class TestChannelTransfers {
 
 
         try (RandomAccessFile fromFile = new RandomAccessFile(fromPath,"rw");
-             RandomAccessFile toFile = new RandomAccessFile(toPath,"rw")) {
-
-            FileChannel fromchannel = fromFile.getChannel();
-            FileChannel toChannel = toFile.getChannel();
+             RandomAccessFile toFile = new RandomAccessFile(toPath,"rw");
+             FileChannel fromchannel = fromFile.getChannel();
+             FileChannel toChannel = toFile.getChannel()) {
 
             toChannel.transferTo(0,fromchannel.size(),fromchannel);
 
