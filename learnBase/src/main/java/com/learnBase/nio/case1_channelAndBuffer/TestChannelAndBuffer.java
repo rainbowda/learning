@@ -1,12 +1,12 @@
-package com.learnBase.nio.channelAndBuffer;
+package com.learnBase.nio.case1_channelAndBuffer;
 
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class Test {
+public class TestChannelAndBuffer {
     public static void main(String[] args) {
-        String filePath = Test.class.getResource("testChannelAndBuffer.txt").getPath();
+        String filePath = TestChannelAndBuffer.class.getResource("testChannelAndBuffer.txt").getPath();
 
         try (RandomAccessFile file = new RandomAccessFile(filePath,"rw")) {
 
