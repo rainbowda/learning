@@ -1,12 +1,12 @@
-package com.learnBase.nio.scatterAndGather;
+package com.learnBase.nio.case2_scatterAndGather;
 
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class Test {
+public class TestScatterAndGather {
     public static void main(String[] args) {
-        String filePath = Test.class.getResource("testScatterAndGather.txt").getPath();
+        String filePath = TestScatterAndGather.class.getResource("testScatterAndGather.txt").getPath();
 
         try (RandomAccessFile file = new RandomAccessFile(filePath,"rw")) {
 
