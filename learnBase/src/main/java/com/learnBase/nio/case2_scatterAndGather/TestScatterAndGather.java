@@ -8,9 +8,8 @@ public class TestScatterAndGather {
     public static void main(String[] args) {
         String filePath = TestScatterAndGather.class.getResource("testScatterAndGather.txt").getPath();
 
-        try (RandomAccessFile file = new RandomAccessFile(filePath,"rw")) {
-
-            FileChannel channel = file.getChannel();
+        try (RandomAccessFile file = new RandomAccessFile(filePath,"rw");
+             FileChannel channel = file.getChannel()) {
 
             //容量
             ByteBuffer header = ByteBuffer.allocate(4);
