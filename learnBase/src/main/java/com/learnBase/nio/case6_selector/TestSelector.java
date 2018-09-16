@@ -15,6 +15,11 @@ import java.util.Iterator;
  */
 public class TestSelector {
 
+    /**
+     * @throws IOException
+     * 运行server方法后
+     * 继续运行case5和case4的client方法
+     */
     @Test
     public void server() throws IOException {
         //创建Selector
