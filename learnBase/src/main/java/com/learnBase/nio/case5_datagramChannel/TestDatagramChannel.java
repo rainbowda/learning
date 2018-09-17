@@ -1,6 +1,7 @@
 package com.learnBase.nio.case5_datagramChannel;
 
 
+import com.learnBase.Constant;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class TestDatagramChannel {
     public void udpServer() throws IOException {
         //打开 DatagramChannel
         DatagramChannel channel = DatagramChannel.open();
-        channel.bind(new InetSocketAddress("localhost",10002));
+        channel.bind(new InetSocketAddress(Constant.ADDRESS_LOCALHOST,Constant.PORT_10002));
 
         /**
          * 接收数据
@@ -47,7 +48,7 @@ public class TestDatagramChannel {
         buffer.put(msg.getBytes());
         buffer.flip();
         //如果服务端并没有监控10002端口，那么什么也不会发生。也不会通知你发出的数据包是否已收到，因为UDP在数据传送方面没有任何保证。
-        channel.send(buffer,new InetSocketAddress("localhost",10002));
+        channel.send(buffer,new InetSocketAddress(Constant.ADDRESS_LOCALHOST,Constant.PORT_10002));
 
         channel.close();
     }
