@@ -1,5 +1,6 @@
 package com.learnBase.nio.case6_selector;
 
+import com.learnBase.Constant;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,8 +30,8 @@ public class TestSelector {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         DatagramChannel datagramChannel = DatagramChannel.open();
 
-        serverSocketChannel.bind(new InetSocketAddress(10001));
-        datagramChannel.bind(new InetSocketAddress(10002));
+        serverSocketChannel.bind(new InetSocketAddress(Constant.PORT_10001));
+        datagramChannel.bind(new InetSocketAddress(Constant.PORT_10002));
         //与Selector一起使用时，Channel必须处于非阻塞模式下
         serverSocketChannel.configureBlocking(false);
         datagramChannel.configureBlocking(false);
