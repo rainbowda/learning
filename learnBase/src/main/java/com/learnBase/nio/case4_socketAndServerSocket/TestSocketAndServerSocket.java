@@ -1,5 +1,6 @@
 package com.learnBase.nio.case4_socketAndServerSocket;
 
+import com.learnBase.Constant;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class TestSocketAndServerSocket {
         //开启非阻塞模式
         //socketChannel.configureBlocking(false);
 
-        channel.bind(new InetSocketAddress(10001));
+        channel.bind(new InetSocketAddress(Constant.PORT_10001));
 
         //监听新进来的连接
         System.out.println("等待客户端连接...");
@@ -48,7 +49,7 @@ public class TestSocketAndServerSocket {
     public void socketClient() throws IOException {
         //1.打开 SocketChannel
         SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.connect(new InetSocketAddress("localhost", 10001));
+        socketChannel.connect(new InetSocketAddress(Constant.ADDRESS, Constant.PORT_10001));
 
         //开启非阻塞模式
         //socketChannel.configureBlocking(false);
