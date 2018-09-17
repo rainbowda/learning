@@ -49,7 +49,7 @@ public class TestSocketAndServerSocket {
     public void socketClient() throws IOException {
         //1.打开 SocketChannel
         SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.connect(new InetSocketAddress(Constant.ADDRESS, Constant.PORT_10001));
+        socketChannel.connect(new InetSocketAddress(Constant.ADDRESS_LOCALHOST, Constant.PORT_10001));
 
         //开启非阻塞模式
         //socketChannel.configureBlocking(false);
