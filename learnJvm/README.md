@@ -1,0 +1,2 @@
+1. [案例1：OutOfMemory异常代码](https://github.com/rainbowda/learnWay/tree/master/learnJvm/src/main/java/com/learnJvm/case1_outOfMemoryError)
+1. [案例2：StackOverFlow异常代码](https://github.com/rainbowda/learnWay/tree/master/learnJvm/src/main/java/com/learnJvm/case2_stackOverflowError)
