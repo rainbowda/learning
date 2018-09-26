@@ -12,7 +12,6 @@ import java.util.List;
 public class Case1 {
 
     public static List<Integer> topKFrequent(int[] nums, int k) {
-
         Arrays.sort(nums);//使用jdk内置的双轴快速排序
 
         /**
