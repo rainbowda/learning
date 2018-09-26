@@ -2,7 +2,7 @@ package com.learnAlgorithm.quickSort;
 
 public class QuickSort {
 
-    public static void quickSort(int[] arr) {
+    public static void sort(int[] arr) {
         qsort(arr, 0, arr.length - 1);
     }
 
@@ -30,7 +30,7 @@ public class QuickSort {
 
     public static void main(String[] args) {
         int[] arr = {8, 3, 1, 2, 5, 2, 0};
-        quickSort(arr);
+        sort(arr);
 
         System.out.println(arr);
 
