@@ -38,8 +38,10 @@ public static List<Integer> topKFrequent(int[] nums, int k) {
 ### 方案二：冒k次泡进行局部排序
 
 
+既然我们将排序优化为局部排序了，那么是否可以不需要排序呢？
+### 方案三：堆
 
-### 方案三：
+
 
 ### 延伸
 
