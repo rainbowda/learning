@@ -60,7 +60,9 @@ public static List<Integer> topKFrequent(int[] nums, int k) {
 既然我们将排序优化为局部排序了，那么是否可以不需要排序呢？
 ### 方案三：堆
 
+### 方案四：随机选择
 
+### 方案五：bitmap位图发
 
 ### 延伸
 
