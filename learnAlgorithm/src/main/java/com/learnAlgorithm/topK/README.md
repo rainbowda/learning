@@ -36,7 +36,26 @@ public static List<Integer> topKFrequent(int[] nums, int k) {
 
 
 ### 方案二：冒k次泡进行局部排序
+```java
+public static List<Integer> topKFrequent(int[] nums, int k) {
+    int i, j;
+    for(i=0; i<k; i++){//表示n次排序过程。
+        for(j=1; j<k-i; j++){
+            if(nums[j-1] > nums[j]){//前面的数字大于后面的数字就交换
+                //交换a[j-1]和a[j]
+                int temp;
+                temp = nums[j-1];
+                nums[j-1] = nums[j];
+                nums[j]=temp;
+            }
+        }
+    }
 
+    List<Integer> list = Arrays.asList(ArrayUtils.toObject(nums));
+
+    return list.subList(0,k);
+}
+```
 
 既然我们将排序优化为局部排序了，那么是否可以不需要排序呢？
 ### 方案三：堆
