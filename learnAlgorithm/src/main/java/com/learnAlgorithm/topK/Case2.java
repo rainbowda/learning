@@ -12,7 +12,6 @@ public class Case2 {
 
     public static List<Integer> topKFrequent(int[] nums, int k) {
         int i, j;
-
         for(i=0; i<k; i++){//表示n次排序过程。
             for(j=1; j<k-i; j++){
                 if(nums[j-1] > nums[j]){//前面的数字大于后面的数字就交换
