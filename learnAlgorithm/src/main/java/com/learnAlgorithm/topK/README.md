@@ -65,7 +65,7 @@ public static List<Integer> topKFrequent(int[] nums, int k) {
 
 ### 方案四：随机选择
 
-### 方案五：bitmap位图发
+### 方案五：bitmap位图法
 
 ### 延伸
 
