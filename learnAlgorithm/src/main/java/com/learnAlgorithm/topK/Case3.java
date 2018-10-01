@@ -14,6 +14,8 @@ public class Case3 {
 
         List<Integer> list = Arrays.asList(ArrayUtils.toObject(nums));
 
+
+
         return list.subList(0,k);
     }
 
