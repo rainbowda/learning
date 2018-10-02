@@ -72,7 +72,8 @@ public static List<Integer> topKFrequent(int[] nums, int k) {
 4. 找到k以后以k为中心进行快速排序
 
 ### 方案五：bitmap位图法
-
+位图法就是利用空间换时间，将对应的数字所在的位置为1。
+如果有重复的数字怎么办？可以用map集合记录对应数据出现的次数，这个不是最优方案
 
 ### 延伸
 
