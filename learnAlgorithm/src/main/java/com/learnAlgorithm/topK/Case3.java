@@ -12,10 +12,10 @@ public class Case3 {
 
     public static List<Integer> topKFrequent(int[] nums, int k) {
 
+        //使用小顶堆进行排序
+
+
         List<Integer> list = Arrays.asList(ArrayUtils.toObject(nums));
-
-
-
         return list.subList(0,k);
     }
 
