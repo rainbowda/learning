@@ -48,7 +48,7 @@ public class Case4 {
     public static void main(String[] args) {
         int[] nums = {8, 3, 1, 2, 5, 2, 0};
 
-        List<Integer> integers = Case1.topKFrequent(nums, 3);
+        List<Integer> integers = Case4.topKFrequent(nums, 3);
 
         System.out.println(integers);
     }
